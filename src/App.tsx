@@ -1,5 +1,9 @@
 import { useState, type FormEvent } from "react";
 import SwissLoginImage from "./assets/swiss-login-new.png";
+import MilkPhoto from "./assets/products/milk.jpg";
+import CreamPhoto from "./assets/products/cream.jpg";
+import ButterPhoto from "./assets/products/butter.jpg";
+import BottlePhoto from "./assets/products/bottle.jpg";
 
 type Account = {
   username: string;
@@ -12,6 +16,7 @@ type Product = {
   price: number;
   unit: string;
   icon: string;
+  image: string;
 };
 
 type CartItem = Product & {
@@ -33,10 +38,10 @@ const accounts: Account[] = [
 ];
 
 const products: Product[] = [
-  { id: 1, name: "Fresh Swiss Milk", price: 6, unit: "liter", icon: "🥛" },
-  { id: 2, name: "Alpine Cream", price: 8, unit: "jar", icon: "🍶" },
-  { id: 3, name: "Swiss Farm Butter", price: 10, unit: "pound", icon: "🧈" },
-  { id: 4, name: "Morning Milking Bottle", price: 5, unit: "bottle", icon: "🐄" }
+  { id: 1, name: "Fresh Swiss Milk", price: 6, unit: "liter", icon: "🥛", image: MilkPhoto },
+  { id: 2, name: "Alpine Cream", price: 8, unit: "jar", icon: "🍶", image: CreamPhoto },
+  { id: 3, name: "Swiss Farm Butter", price: 10, unit: "pound", icon: "🧈", image: ButterPhoto },
+  { id: 4, name: "Morning Milking Bottle", price: 5, unit: "bottle", icon: "🐄", image: BottlePhoto }
 ];
 
 const emptyDeliveryForm: DeliveryForm = {
@@ -270,7 +275,10 @@ function App() {
           <div className="products-grid">
             {products.map((product) => (
               <article key={product.id} className="product-card">
-                <div className="product-icon">{product.icon}</div>
+                <div className="product-photo-wrap">
+                  <img className="product-photo" src={product.image} alt={product.name} />
+                  <span className="product-badge">{product.icon}</span>
+                </div>
                 <h3>{product.name}</h3>
                 <p>
                   ${product.price} / {product.unit}
