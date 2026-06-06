@@ -5,437 +5,1548 @@
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #f4f7f2;
-  color: #17351f;
+  background: #eef7f1;
+  color: #153b24;
+  overflow-x: hidden;
 }
 
 button,
-input {
-  font: inherit;
+input,
+textarea {
+  font-family: inherit;
 }
 
 button {
   border: none;
   cursor: pointer;
-  border-radius: 14px;
-  padding: 12px 18px;
-  font-weight: 800;
-  color: white;
-  background: linear-gradient(135deg, #12843a, #0c6c2e);
-  box-shadow: 0 12px 24px rgba(12, 108, 46, 0.24);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.04);
-  box-shadow: 0 16px 28px rgba(12, 108, 46, 0.34);
-}
-
+/* LOGIN PAGE */
 .login-page {
   min-height: 100vh;
+  height: 100vh;
   display: flex;
-  background: #f4f7f2;
-}
-
-.image-side {
-  width: 48%;
-  min-height: 100vh;
   overflow: hidden;
-  background: #dfeede;
+  background: linear-gradient(135deg, #f8fff9, #eef9f3);
 }
 
-.image-side img {
-  width: 165%;
+/* Left farm image */
+.photo-side {
+  width: 52%;
+  height: 100vh;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: #eef9f3;
+}
+
+.photo-side img {
+  width: 150%;
   height: 100%;
   object-fit: cover;
   object-position: left center;
+  transform: translateX(-1%);
   display: block;
 }
 
-.form-side {
-  width: 52%;
+/* Hide the fake old image form mostly, but keep goat/cow visible */
+.photo-side::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24%;
+  height: 70%;
+  background: linear-gradient(
+    90deg,
+    rgba(248, 255, 249, 0.45) 0%,
+    rgba(248, 255, 249, 0.9) 55%,
+    rgba(248, 255, 249, 1) 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+.photo-shade {
+  position: absolute;
+  left: 22px;
+  bottom: 20px;
+  width: 330px;
+  max-width: calc(100% - 44px);
+  padding: 16px 20px;
+  border-radius: 18px;
+  color: white;
+  background: linear-gradient(135deg, rgba(8, 54, 28, 0.82), rgba(8, 54, 28, 0.42));
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+  z-index: 6;
+}
+
+.photo-shade h1 {
+  margin: 0 0 7px;
+  font-size: 30px;
+  line-height: 1.05;
+}
+
+.photo-shade p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+/* Right real login form */
+.login-side {
+  width: 48%;
+  height: 100vh;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 36px;
-  background: linear-gradient(135deg, #ffffff, #eef8f0);
+  padding: 36px 52px;
+  background: linear-gradient(135deg, #ffffff, #eef9f3);
 }
 
 .login-card {
   width: 100%;
-  max-width: 420px;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(16, 120, 52, 0.13);
-  padding: 34px;
+  max-width: 500px;
+  padding: 40px;
   border-radius: 28px;
-  box-shadow: 0 24px 60px rgba(13, 67, 28, 0.18);
+  background: white;
+  box-shadow: 0 24px 60px rgba(16, 81, 42, 0.16);
 }
 
 .eyebrow {
   margin: 0 0 8px;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #12843a;
+  letter-spacing: 2px;
+  color: #149b47;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.login-card h1,
-.topbar h1 {
+.login-card h2 {
   margin: 0;
-  font-size: 34px;
-  line-height: 1.05;
-  color: #12341d;
+  font-size: 42px;
+  line-height: 1.1;
+  color: #105526;
 }
 
-.login-subtitle,
-.topbar p,
-.muted {
-  color: #5d735f;
+.login-text {
+  color: #526457;
+  margin: 18px 0 24px;
+  font-size: 17px;
 }
 
 label {
-  display: grid;
-  gap: 8px;
-  margin-top: 16px;
+  display: block;
+  margin: 14px 0 7px;
   font-weight: 800;
-  color: #21442b;
+  color: #1c4b2d;
 }
 
-input {
+input,
+textarea {
   width: 100%;
-  padding: 13px 14px;
-  border: 1px solid #cfe1d2;
-  border-radius: 14px;
+  border: 1px solid #c9dfd1;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 17px;
   outline: none;
-  background: #fbfffb;
+  background: #fbfffc;
 }
 
-input:focus {
-  border-color: #12843a;
-  box-shadow: 0 0 0 4px rgba(18, 132, 58, 0.12);
+.login-card input {
+  height: 58px;
 }
 
-.main-button {
+textarea {
+  resize: vertical;
+  min-height: 95px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #17a34a;
+  box-shadow: 0 0 0 4px rgba(23, 163, 74, 0.11);
+}
+
+.primary-btn,
+.product-card button,
+.cart-actions button,
+.logout-btn {
+  border-radius: 14px;
+  padding: 13px 18px;
+  font-weight: 800;
+  color: white;
+  background: #139846;
+  box-shadow: 0 10px 22px rgba(19, 152, 70, 0.24);
+  transition: 0.2s ease;
+}
+
+.primary-btn {
   width: 100%;
   margin-top: 20px;
+  height: 56px;
+  font-size: 16px;
 }
 
-.error-text {
-  margin: 12px 0 0;
+.primary-btn:hover,
+.product-card button:hover,
+.cart-actions button:hover,
+.logout-btn:hover {
+  transform: translateY(-2px);
+  background: #0d7434;
+}
+
+.error {
+  background: #fff0f0;
   color: #b42318;
-  font-weight: 800;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  margin: 14px 0 0;
 }
 
+/* AFTER LOGIN */
 .app {
   min-height: 100vh;
   padding: 28px;
   background:
-    radial-gradient(circle at top left, rgba(18, 132, 58, 0.13), transparent 32%),
-    linear-gradient(135deg, #f6fbf4, #e8f3e7);
+    radial-gradient(circle at top left, rgba(144, 222, 171, 0.45), transparent 36%),
+    linear-gradient(135deg, #f5fff7, #e4f3e9);
 }
 
 .welcome-banner {
-  max-width: 1180px;
-  margin: 0 auto 18px;
-  padding: 14px 18px;
-  border-radius: 18px;
-  color: #0f5f2c;
-  background: #ddf8e5;
-  font-weight: 900;
-  box-shadow: 0 12px 28px rgba(15, 95, 44, 0.12);
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  background: #105526;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 999px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+  font-weight: 800;
 }
 
 .topbar,
-.panel {
+.farm-hero,
+.products-section,
+.cart-section,
+.delivery-section,
+.invoice-section {
   max-width: 1180px;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(15, 95, 44, 0.1);
-  border-radius: 28px;
-  box-shadow: 0 18px 45px rgba(23, 53, 31, 0.1);
+  margin: 0 auto 26px;
 }
 
 .topbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 26px;
+  align-items: center;
+  background: white;
+  padding: 24px 28px;
+  border-radius: 26px;
+  box-shadow: 0 16px 38px rgba(22, 72, 38, 0.1);
 }
 
-.logout-button {
-  width: auto;
-  background: linear-gradient(135deg, #21442b, #102717);
+.topbar h1 {
+  margin: 0;
+  color: #105526;
 }
 
-.dashboard-grid {
-  max-width: 1180px;
-  margin: 22px auto;
+.topbar p {
+  margin-bottom: 0;
+  color: #53695c;
+}
+
+.logout-btn {
+  white-space: nowrap;
+  background: #174f2d;
+}
+
+.farm-hero {
+  min-height: 230px;
+  display: flex;
+  align-items: end;
+  padding: 34px;
+  border-radius: 30px;
+  background:
+    linear-gradient(135deg, rgba(14, 78, 37, 0.88), rgba(14, 78, 37, 0.2)),
+    url("./assets/swiss-login-new.png");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  box-shadow: 0 18px 46px rgba(13, 77, 36, 0.17);
+}
+
+.farm-hero h2 {
+  font-size: 36px;
+  margin: 0 0 8px;
+}
+
+.farm-hero p {
+  margin: 0;
+  font-size: 17px;
+}
+
+.products-section,
+.cart-section,
+.delivery-section,
+.invoice-section {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 28px;
+  border-radius: 28px;
+  box-shadow: 0 14px 34px rgba(22, 72, 38, 0.08);
+}
+
+.products-section h2,
+.cart-section h2,
+.delivery-section h2,
+.invoice-section h2 {
+  margin-top: 0;
+  color: #105526;
+  text-align: center;
+  font-size: 32px;
+}
+
+.product-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 22px;
 }
 
-.panel {
-  padding: 24px;
-}
-
-.panel h2 {
-  margin-top: 0;
-  font-size: 24px;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
 .product-card {
-  padding: 20px;
+  overflow: hidden;
   border-radius: 24px;
-  background: linear-gradient(135deg, #ffffff, #f2faf3);
-  border: 1px solid #d8eadb;
-  box-shadow: 0 14px 28px rgba(23, 53, 31, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: white;
+  box-shadow: 0 14px 30px rgba(19, 86, 44, 0.12);
+  transition: 0.2s ease;
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 36px rgba(23, 53, 31, 0.14);
+  transform: translateY(-6px);
+  box-shadow: 0 22px 42px rgba(19, 86, 44, 0.18);
 }
 
-.product-icon {
-  width: 54px;
-  height: 54px;
-  display: grid;
-  place-items: center;
-  border-radius: 18px;
-  font-size: 30px;
-  background: #e6f6ea;
+.product-card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
 }
 
-.product-card h3 {
-  margin-bottom: 6px;
+.product-body {
+  padding: 20px;
+}
+
+.product-body h3 {
+  margin: 0 0 8px;
+  color: #105526;
+}
+
+.product-body p {
+  color: #53695c;
 }
 
 .product-card button {
   width: 100%;
-  margin-top: 10px;
 }
 
-.cart-panel {
-  height: fit-content;
+.empty-cart {
+  text-align: center;
+  color: #53695c;
+  font-weight: 700;
+}
+
+.cart-list {
+  display: grid;
+  gap: 14px;
 }
 
 .cart-item {
-  display: grid;
-  gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid #e0ece2;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  background: #f6fbf7;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid #d8eadf;
+}
+
+.cart-item h3 {
+  margin: 0 0 6px;
 }
 
 .cart-item p {
-  margin: 4px 0 0;
-  color: #668169;
+  margin: 0;
+  color: #53695c;
 }
 
 .cart-actions {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
 }
 
 .cart-actions button {
-  width: auto;
   padding: 9px 12px;
-  border-radius: 12px;
 }
 
-.total-row,
-.invoice-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 16px 0;
-  font-size: 18px;
+.cart-actions span {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 900;
 }
 
-.delivery-panel,
-.invoice-panel {
-  margin-top: 22px;
+.remove-btn {
+  background: #b42318 !important;
 }
 
-.delivery-form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+.total {
+  text-align: right;
+  color: #105526;
+  font-size: 24px;
 }
 
-.delivery-form .main-button {
-  grid-column: 1 / -1;
+.delivery-btn {
+  max-width: 340px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.error-box {
-  padding: 14px 16px;
+.delivery-form,
+.invoice-card {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.invoice-card {
+  background: #f8fff9;
+  border: 1px solid #d8eadf;
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.invoice-card h3 {
+  color: #105526;
+  margin-bottom: 8px;
+}
+
+.thank-you {
+  padding: 14px;
   border-radius: 16px;
-  background: #fff0f0;
-  border: 1px solid #ffc7c7;
-  color: #b42318;
-  font-weight: 800;
+  background: #e1f7e8;
+  color: #105526;
+  font-weight: 900;
+  text-align: center;
 }
 
-.error-box p {
-  margin: 5px 0;
-}
-
-.invoice-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 20px;
-  padding: 14px 0;
-}
-
-.invoice-row {
-  border-bottom: 1px solid #e0ece2;
-}
-
-.invoice-total {
-  border-top: 2px solid #12843a;
-  margin-top: 8px;
-}
-
-@media (max-width: 850px) {
-  .login-page,
-  .topbar {
+@media (max-width: 950px) {
+  .login-page {
     flex-direction: column;
+    height: auto;
+    overflow: auto;
   }
 
-  .image-side,
-  .form-side {
+  .photo-side,
+  .login-side {
     width: 100%;
-    min-height: 50vh;
+    height: auto;
   }
 
-  .image-side img {
+  .photo-side {
+    min-height: 48vh;
+  }
+
+  .photo-side img {
     width: 100%;
+    transform: none;
+    object-position: center;
   }
 
-  .dashboard-grid,
-  .products-grid,
-  .delivery-form,
-  .invoice-grid {
+  .photo-side::after {
+    display: none;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topbar,
+  .cart-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 560px) {
+  .product-grid {
     grid-template-columns: 1fr;
   }
+
+  .app {
+    padding: 16px;
+  }
 }
 
+/* === FINAL STRIP HIDE: keep goat, hide fake form === */
 
-.product-photo-wrap {
-  position: relative;
-  width: 100%;
-  height: 165px;
-  overflow: hidden;
-  border-radius: 20px;
-  margin-bottom: 16px;
-  background: #e6f6ea;
-  box-shadow: inset 0 0 0 1px rgba(18, 132, 58, 0.12);
+.photo-side {
+  width: 52% !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  position: relative !important;
 }
 
-.product-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.25s ease, filter 0.25s ease;
+.login-side {
+  width: 48% !important;
+  padding: 36px 52px !important;
 }
 
-.product-card:hover .product-photo {
-  transform: scale(1.06);
-  filter: brightness(1.04);
+/* Keep woman, cow, goat visible */
+.photo-side img {
+  width: 150% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: left center !important;
+  transform: translateX(-1%) !important;
 }
 
-.product-badge {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 15px;
-  font-size: 24px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 10px 22px rgba(23, 53, 31, 0.18);
+/* Cover only the ugly fake login strip on the right */
+.photo-side::after {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 17% !important;
+  height: 100% !important;
+  background: linear-gradient(
+    90deg,
+    rgba(238, 249, 243, 0.88) 0%,
+    rgba(238, 249, 243, 0.98) 45%,
+    rgba(238, 249, 243, 1) 100%
+  ) !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
 }
 
+/* Keep title small and professional */
+.photo-shade {
+  left: 22px !important;
+  bottom: 20px !important;
+  width: 330px !important;
+  max-width: 330px !important;
+  padding: 16px 20px !important;
+  border-radius: 18px !important;
+  z-index: 6 !important;
+}
+
+.photo-shade h1 {
+  font-size: 30px !important;
+}
+
+.photo-shade p {
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+}
+
+/* === END FINAL STRIP HIDE === */
+
+/* === FINAL POLISH LOGIN PAGE === */
+
+/* Keep the good farm image width */
+.photo-side {
+  width: 52% !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* Keep real form side balanced */
+.login-side {
+  width: 48% !important;
+  padding: 36px 54px !important;
+}
+
+/* Keep woman, cow and goat visible */
+.photo-side img {
+  width: 150% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: left center !important;
+  transform: translateX(-1%) !important;
+}
+
+/* Hide the leftover fake-form strip more cleanly */
+.photo-side::after {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 20% !important;
+  height: 100% !important;
+  background: linear-gradient(
+    90deg,
+    rgba(238, 249, 243, 0.92) 0%,
+    rgba(238, 249, 243, 0.99) 42%,
+    rgba(238, 249, 243, 1) 100%
+  ) !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
+}
+
+/* Keep title box smaller so goat stays visible */
+.photo-shade {
+  left: 22px !important;
+  bottom: 20px !important;
+  width: 320px !important;
+  max-width: 320px !important;
+  padding: 15px 19px !important;
+  border-radius: 18px !important;
+  z-index: 6 !important;
+}
+
+.photo-shade h1 {
+  font-size: 29px !important;
+  line-height: 1.05 !important;
+  margin-bottom: 6px !important;
+}
+
+.photo-shade p {
+  font-size: 12.5px !important;
+  line-height: 1.3 !important;
+}
+
+/* Slightly cleaner real login card */
+.login-card {
+  max-width: 510px !important;
+  padding: 40px !important;
+}
+
+.login-card h2 {
+  font-size: 40px !important;
+}
+
+/* === END FINAL POLISH LOGIN PAGE === */
+
+/* === FIX DASHBOARD HERO AFTER LOGIN === */
+
+/* Remove fake login image from dashboard banner */
+.farm-hero {
+  min-height: 230px !important;
+  display: flex !important;
+  align-items: end !important;
+  padding: 34px !important;
+  border-radius: 30px !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.18), transparent 28%),
+    linear-gradient(135deg, #0f5c2c, #168f45, #b7e7c5) !important;
+  color: white !important;
+  box-shadow: 0 18px 46px rgba(13, 77, 36, 0.17) !important;
+}
+
+.farm-hero h2 {
+  font-size: 36px !important;
+  margin: 0 0 8px !important;
+  color: white !important;
+}
+
+.farm-hero p {
+  margin: 0 !important;
+  font-size: 17px !important;
+  color: white !important;
+}
+
+/* Make product section start cleanly */
+.products-section {
+  margin-top: 28px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* Keep product cards visible and professional */
+.product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 22px !important;
+  align-items: stretch !important;
+}
 
 .product-card {
-  min-height: 405px;
-  padding: 18px;
-  border-radius: 26px;
-  background: linear-gradient(180deg, #ffffff 0%, #f7fff8 100%);
-  border: 1px solid rgba(18, 132, 58, 0.16);
-  box-shadow: 0 18px 40px rgba(23, 53, 31, 0.11);
+  min-height: 340px !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  background: white !important;
+  box-shadow: 0 14px 30px rgba(19, 86, 44, 0.12) !important;
+}
+
+.product-card img {
+  height: 180px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.product-body {
+  padding: 20px !important;
+}
+
+/* === END FIX DASHBOARD HERO AFTER LOGIN === */
+
+
+/* === PROFESSIONAL DAIRY PAGE POLISH START === */
+
+/* Make top area cleaner */
+.topbar {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-radius: 28px !important;
+  box-shadow: 0 18px 42px rgba(22, 72, 38, 0.10) !important;
+}
+
+.topbar h1 {
+  font-size: 46px !important;
+  line-height: 1.08 !important;
+}
+
+.topbar p {
+  font-size: 17px !important;
+}
+
+/* Professional landscape-style banner without disturbing product cards */
+.farm-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 250px !important;
+  display: flex !important;
+  align-items: end !important;
+  padding: 38px !important;
+  border-radius: 30px !important;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255,255,255,0.18), transparent 22%),
+    radial-gradient(circle at 85% 18%, rgba(255,255,255,0.10), transparent 24%),
+    linear-gradient(135deg, #0d5a2a 0%, #158c43 48%, #9fd8b0 100%) !important;
+  box-shadow: 0 18px 46px rgba(13, 77, 36, 0.18) !important;
+}
+
+.farm-hero::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background:
+    linear-gradient(to top, rgba(7, 56, 26, 0.26), rgba(7, 56, 26, 0.04)),
+    radial-gradient(circle at 18% 100%, rgba(255,255,255,0.08), transparent 22%),
+    radial-gradient(circle at 78% 100%, rgba(255,255,255,0.07), transparent 20%) !important;
+  pointer-events: none !important;
+}
+
+.farm-hero > div {
+  position: relative !important;
+  z-index: 1 !important;
+  max-width: 760px !important;
+}
+
+.farm-hero h2 {
+  margin: 0 0 10px !important;
+  font-size: 38px !important;
+  color: #ffffff !important;
+}
+
+.farm-hero p {
+  margin: 0 !important;
+  font-size: 18px !important;
+  color: #f3fff6 !important;
+}
+
+/* Product section cleaner and more professional */
+.products-section {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 30px !important;
+  box-shadow: 0 14px 34px rgba(22, 72, 38, 0.08) !important;
+}
+
+.products-section h2 {
+  font-size: 34px !important;
+  margin-bottom: 24px !important;
+}
+
+/* Keep product cards, but make them more polished */
+.product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  align-items: stretch !important;
+}
+
+.product-card {
+  min-height: 365px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-shadow: 0 14px 32px rgba(19, 86, 44, 0.12) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 22px 46px rgba(23, 53, 31, 0.18);
+  transform: translateY(-6px) !important;
+  box-shadow: 0 22px 44px rgba(19, 86, 44, 0.18) !important;
 }
 
-.product-photo-wrap {
-  position: relative;
-  width: 100%;
-  height: 190px;
-  overflow: hidden;
-  border-radius: 22px;
-  margin-bottom: 18px;
-  background: #e7f5eb;
-  box-shadow: 0 12px 26px rgba(23, 53, 31, 0.12);
+.product-card img {
+  width: 100% !important;
+  height: 190px !important;
+  object-fit: cover !important;
+  display: block !important;
+  background: #eef9f3 !important;
 }
 
-.product-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.28s ease, filter 0.28s ease;
+.product-body {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 20px !important;
 }
 
-.product-card:hover .product-photo {
-  transform: scale(1.07);
-  filter: brightness(1.05) saturate(1.08);
+.product-body h3 {
+  margin: 0 0 8px !important;
+  color: #105526 !important;
+  font-size: 22px !important;
 }
 
-.product-badge {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  font-size: 25px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 12px 26px rgba(23, 53, 31, 0.2);
+.product-body p {
+  margin-bottom: 16px !important;
+  color: #53695c !important;
+  font-size: 16px !important;
 }
 
-.product-card h3 {
-  font-size: 23px;
-  margin: 12px 0 8px;
+.product-body button {
+  margin-top: auto !important;
 }
 
-.product-card p {
+/* Make cart/delivery/invoice sections look consistent */
+.cart-section,
+.delivery-section,
+.invoice-section {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 30px !important;
+  box-shadow: 0 14px 34px rgba(22, 72, 38, 0.08) !important;
+}
+
+/* Responsive */
+@media (max-width: 950px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .topbar h1 {
+    font-size: 36px !important;
+  }
+
+  .farm-hero h2 {
+    font-size: 30px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === PROFESSIONAL DAIRY PAGE POLISH END === */
+
+
+/* === PROFESSIONAL PRODUCT CARDS FINAL START === */
+
+.products-section {
+  padding: 34px !important;
+  border-radius: 34px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,255,250,0.96)) !important;
+  box-shadow: 0 20px 45px rgba(20, 83, 45, 0.10) !important;
+}
+
+.products-section h2 {
+  font-size: 38px !important;
+  margin-bottom: 32px !important;
+  color: #105526 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 26px !important;
+  align-items: stretch !important;
+}
+
+.product-card {
+  min-height: 390px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-radius: 26px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(17, 85, 38, 0.08) !important;
+  box-shadow: 0 16px 34px rgba(19, 86, 44, 0.13) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+.product-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 26px 52px rgba(19, 86, 44, 0.20) !important;
+}
+
+.product-card img {
+  width: 100% !important;
+  height: 205px !important;
+  object-fit: cover !important;
+  display: block !important;
+  background: linear-gradient(135deg, #e9f7ef, #f7fff9) !important;
+}
+
+.product-body {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 22px !important;
+}
+
+.product-body h3 {
+  margin: 0 0 12px !important;
+  color: #105526 !important;
+  font-size: 24px !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.3px !important;
+}
+
+.product-body p {
+  margin: 0 0 20px !important;
+  color: #4f6658 !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+}
+
+.product-body button {
+  margin-top: auto !important;
+  width: 100% !important;
+  height: 54px !important;
+  border-radius: 16px !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  background: linear-gradient(135deg, #159947, #0f7d38) !important;
+  box-shadow: 0 12px 24px rgba(19, 152, 70, 0.24) !important;
+}
+
+.product-body button:hover {
+  transform: translateY(-2px) !important;
+  background: linear-gradient(135deg, #0f7d38, #0b6830) !important;
+}
+
+@media (max-width: 1100px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === PROFESSIONAL PRODUCT CARDS FINAL END === */
+
+
+/* === SWISS ALPINE FEEL START === */
+
+/* Swiss alpine page background */
+.app {
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255, 255, 255, 0.9), transparent 20%),
+    radial-gradient(circle at 88% 12%, rgba(220, 245, 228, 0.8), transparent 28%),
+    linear-gradient(180deg, #f7fff9 0%, #e4f5eb 45%, #fdfefe 100%) !important;
+}
+
+/* Top header: clean Swiss farm shop */
+.topbar {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(190, 20, 32, 0.12) !important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(247,255,249,0.96)) !important;
+}
+
+.topbar::before {
+  content: "��🇭 SWISS ALPINE DAIRY" !important;
+  position: absolute !important;
+  top: 18px !important;
+  right: 170px !important;
+  padding: 8px 14px !important;
+  border-radius: 999px !important;
+  background: #d71920 !important;
+  color: white !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1px !important;
+}
+
+.topbar h1 {
+  color: #105526 !important;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #d71920, #a81218) !important;
+  box-shadow: 0 12px 24px rgba(215, 25, 32, 0.22) !important;
+}
+
+/* Swiss landscape hero */
+.farm-hero {
+  position: relative !important;
+  min-height: 270px !important;
+  border-radius: 34px !important;
+  overflow: hidden !important;
+  background:
+    linear-gradient(135deg, rgba(8, 70, 33, 0.92), rgba(17, 137, 64, 0.78)),
+    linear-gradient(160deg, #0b4d27 0%, #168f45 48%, #dff7e7 100%) !important;
+  box-shadow: 0 22px 52px rgba(13, 77, 36, 0.2) !important;
+}
+
+/* Alpine mountain shapes */
+.farm-hero::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background:
+    linear-gradient(135deg, transparent 0 48%, rgba(255,255,255,0.16) 49%, transparent 50%) 70% 28% / 220px 160px no-repeat,
+    linear-gradient(135deg, transparent 0 48%, rgba(255,255,255,0.14) 49%, transparent 50%) 84% 36% / 180px 130px no-repeat,
+    radial-gradient(ellipse at 20% 100%, rgba(220, 250, 225, 0.28) 0%, rgba(220, 250, 225, 0.28) 35%, transparent 36%),
+    radial-gradient(ellipse at 58% 100%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.14) 38%, transparent 39%) !important;
+  pointer-events: none !important;
+}
+
+.farm-hero::after {
+  content: "Swiss Alps • Fresh Milk • Butter • Cream • Farm Delivery" !important;
+  position: absolute !important;
+  top: 30px !important;
+  right: 34px !important;
+  padding: 12px 18px !important;
+  border-radius: 999px !important;
+  background: rgba(215, 25, 32, 0.92) !important;
+  color: white !important;
+  font-weight: 900 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.6px !important;
+  box-shadow: 0 12px 26px rgba(0,0,0,0.16) !important;
+}
+
+.farm-hero h2::before {
+  content: "🇨�� ";
+}
+
+.farm-hero h2 {
+  color: white !important;
+  text-shadow: 0 8px 22px rgba(0,0,0,0.22) !important;
+}
+
+/* Swiss product shelf */
+.products-section {
+  border: 1px solid rgba(215, 25, 32, 0.08) !important;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fffa 100%) !important;
+}
+
+.products-section::before {
+  content: "🇨🇭 Alpine Farm Selection" !important;
+  display: block !important;
+  width: fit-content !important;
+  margin: 0 auto 12px !important;
+  padding: 9px 18px !important;
+  border-radius: 999px !important;
+  background: #fff1f1 !important;
+  color: #b5121b !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+}
+
+.products-section h2 {
+  color: #105526 !important;
+}
+
+/* Premium Swiss product cards */
+.product-card {
+  position: relative !important;
+  border: 1px solid rgba(16, 85, 38, 0.10) !important;
+  background: #ffffff !important;
+}
+
+.product-card::after {
+  content: "Swiss Fresh" !important;
+  position: absolute !important;
+  top: 14px !important;
+  left: 14px !important;
+  padding: 7px 12px !important;
+  border-radius: 999px !important;
+  background: rgba(215, 25, 32, 0.92) !important;
+  color: white !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12) !important;
+}
+
+.product-body h3::before {
+  content: "🌿 ";
   font-size: 18px;
-  color: #244b2c;
-  margin-bottom: 20px;
 }
 
-.product-card button {
-  margin-top: auto;
+.product-body button {
+  background: linear-gradient(135deg, #159947, #0f7d38) !important;
 }
+
+.product-body button:hover {
+  background: linear-gradient(135deg, #d71920, #a81218) !important;
+}
+
+/* Cart, delivery, invoice Swiss clean style */
+.cart-section,
+.delivery-section,
+.invoice-section {
+  border: 1px solid rgba(215, 25, 32, 0.08) !important;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fffa 100%) !important;
+}
+
+.cart-section h2::before {
+  content: "🧺 ";
+}
+
+.delivery-section h2::before {
+  content: "🚚 ";
+}
+
+.invoice-section h2::before {
+  content: "🇨🇭 ";
+}
+
+/* === SWISS ALPINE FEEL END === */
+
+/* === PROFESSIONAL SWISS PAGE CLEANUP START === */
+
+/* Clean professional background */
+.app {
+  background:
+    radial-gradient(circle at 8% 8%, rgba(255,255,255,0.9), transparent 22%),
+    radial-gradient(circle at 92% 12%, rgba(202,235,214,0.65), transparent 28%),
+    linear-gradient(180deg, #f6fff8 0%, #e6f6ec 45%, #fbfffc 100%) !important;
+}
+
+/* Professional top header */
+.topbar {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 30px !important;
+  border: 1px solid rgba(16, 85, 38, 0.08) !important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.99), rgba(247,255,249,0.97)) !important;
+  box-shadow: 0 18px 42px rgba(20, 83, 45, 0.11) !important;
+}
+
+.topbar::before {
+  content: "SWISS ALPINE DAIRY" !important;
+  position: absolute !important;
+  top: 22px !important;
+  right: 170px !important;
+  padding: 9px 18px !important;
+  border-radius: 999px !important;
+  background: #d71920 !important;
+  color: white !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1.4px !important;
+}
+
+.topbar h1 {
+  color: #105526 !important;
+  letter-spacing: -1px !important;
+}
+
+.topbar h1::after {
+  content: "" !important;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #0f5c2c, #0b4722) !important;
+  box-shadow: 0 12px 24px rgba(15, 92, 44, 0.22) !important;
+}
+
+/* Replace busy hero with premium Swiss landscape style */
+.farm-hero {
+  position: relative !important;
+  min-height: 285px !important;
+  border-radius: 34px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: end !important;
+  padding: 42px !important;
+  background:
+    linear-gradient(135deg, rgba(7, 67, 31, 0.96), rgba(18, 133, 63, 0.84)),
+    radial-gradient(circle at 20% 25%, rgba(255,255,255,0.18), transparent 22%),
+    linear-gradient(160deg, #073f1e 0%, #168f45 54%, #bdecc9 100%) !important;
+  box-shadow: 0 22px 52px rgba(13, 77, 36, 0.20) !important;
+}
+
+/* Simple alpine hills, no broken symbols */
+.farm-hero::before {
+  content: "" !important;
+  position: absolute !important;
+  left: -5% !important;
+  right: -5% !important;
+  bottom: -78px !important;
+  height: 180px !important;
+  background:
+    radial-gradient(ellipse at 22% 80%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.22) 36%, transparent 37%),
+    radial-gradient(ellipse at 58% 80%, rgba(209,246,218,0.30) 0%, rgba(209,246,218,0.30) 38%, transparent 39%),
+    radial-gradient(ellipse at 88% 82%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.16) 34%, transparent 35%) !important;
+  pointer-events: none !important;
+}
+
+.farm-hero::after {
+  content: "Swiss Alps  •  Fresh Milk  •  Butter  •  Cream  •  Farm Delivery" !important;
+  position: absolute !important;
+  top: 30px !important;
+  right: 34px !important;
+  padding: 12px 20px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.5px !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 12px 26px rgba(0,0,0,0.14) !important;
+}
+
+.farm-hero h2 {
+  position: relative !important;
+  z-index: 2 !important;
+  color: #ffffff !important;
+  font-size: 42px !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.7px !important;
+  text-shadow: 0 8px 22px rgba(0,0,0,0.22) !important;
+}
+
+.farm-hero h2::before {
+  content: "" !important;
+}
+
+.farm-hero p {
+  position: relative !important;
+  z-index: 2 !important;
+  color: #effff4 !important;
+  font-size: 18px !important;
+  max-width: 760px !important;
+}
+
+/* Clean product area */
+.products-section {
+  border-radius: 34px !important;
+  border: 1px solid rgba(16, 85, 38, 0.08) !important;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fffa 100%) !important;
+  box-shadow: 0 20px 45px rgba(20, 83, 45, 0.10) !important;
+}
+
+.products-section::before {
+  content: "ALPINE FARM SELECTION" !important;
+  display: block !important;
+  width: fit-content !important;
+  margin: 0 auto 12px !important;
+  padding: 9px 18px !important;
+  border-radius: 999px !important;
+  background: #e7f8ed !important;
+  color: #13783b !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1.7px !important;
+}
+
+.products-section h2 {
+  font-size: 38px !important;
+  letter-spacing: -0.6px !important;
+}
+
+/* Remove broken/extra symbols from product cards */
+.product-card::after {
+  content: "Swiss Fresh" !important;
+  background: rgba(16, 85, 38, 0.90) !important;
+  color: white !important;
+}
+
+.product-body h3::before {
+  content: "" !important;
+}
+
+.product-body p::before {
+  content: "" !important;
+}
+
+/* Cart/delivery/invoice clean Swiss style */
+.cart-section,
+.delivery-section,
+.invoice-section {
+  border-radius: 30px !important;
+  border: 1px solid rgba(16, 85, 38, 0.08) !important;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fffa 100%) !important;
+  box-shadow: 0 14px 34px rgba(22, 72, 38, 0.08) !important;
+}
+
+/* === PROFESSIONAL SWISS PAGE CLEANUP END === */
+
+
+/* === FINAL PROFESSIONAL SWISS PRODUCTS PAGE START === */
+
+/* Clean overall page */
+.app {
+  background:
+    radial-gradient(circle at 10% 8%, rgba(255,255,255,0.88), transparent 22%),
+    radial-gradient(circle at 90% 12%, rgba(219,241,225,0.72), transparent 28%),
+    linear-gradient(180deg, #f7fff9 0%, #e7f5ec 48%, #fbfffc 100%) !important;
+}
+
+/* Professional top header */
+.topbar {
+  position: relative !important;
+  border-radius: 30px !important;
+  border: 1px solid rgba(16, 85, 38, 0.08) !important;
+  background: linear-gradient(135deg, rgba(255,255,255,0.99), rgba(248,255,250,0.97)) !important;
+  box-shadow: 0 18px 42px rgba(20, 83, 45, 0.10) !important;
+  overflow: hidden !important;
+}
+
+.topbar::before {
+  display: none !important;
+  content: none !important;
+}
+
+.topbar h1 {
+  color: #105526 !important;
+  font-size: 46px !important;
+  line-height: 1.06 !important;
+  letter-spacing: -1px !important;
+}
+
+.topbar p {
+  color: #556b5d !important;
+  font-size: 17px !important;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #0f5f2d, #0b4722) !important;
+  box-shadow: 0 12px 24px rgba(15, 95, 45, 0.22) !important;
+}
+
+/* Swiss Alps hero banner */
+.farm-hero {
+  position: relative !important;
+  min-height: 290px !important;
+  padding: 42px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  overflow: hidden !important;
+  border-radius: 34px !important;
+  background:
+    linear-gradient(135deg, rgba(8, 66, 30, 0.78), rgba(15, 111, 53, 0.48)),
+    url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85") center center / cover no-repeat !important;
+  box-shadow: 0 22px 52px rgba(13, 77, 36, 0.18) !important;
+}
+
+.farm-hero::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background:
+    linear-gradient(to top, rgba(7, 48, 22, 0.25), rgba(7, 48, 22, 0.08)),
+    radial-gradient(circle at 15% 22%, rgba(255,255,255,0.18), transparent 18%) !important;
+  pointer-events: none !important;
+}
+
+.farm-hero::after {
+  display: none !important;
+  content: none !important;
+}
+
+.farm-hero > div {
+  position: relative !important;
+  z-index: 1 !important;
+  max-width: 760px !important;
+}
+
+.farm-hero h2 {
+  margin: 0 0 10px !important;
+  color: #ffffff !important;
+  font-size: 42px !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.6px !important;
+  text-shadow: 0 10px 24px rgba(0,0,0,0.22) !important;
+}
+
+.farm-hero h2::before {
+  content: "" !important;
+}
+
+.farm-hero p {
+  margin: 0 !important;
+  color: #f5fff7 !important;
+  font-size: 18px !important;
+  line-height: 1.45 !important;
+}
+
+/* Product section */
+.products-section {
+  padding: 36px !important;
+  border-radius: 34px !important;
+  border: 1px solid rgba(16, 85, 38, 0.08) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,255,250,0.96)) !important;
+  box-shadow: 0 18px 42px rgba(20, 83, 45, 0.08) !important;
+}
+
+.products-section::before {
+  display: none !important;
+  content: none !important;
+}
+
+.products-section h2 {
+  font-size: 40px !important;
+  margin-bottom: 32px !important;
+  color: #105526 !important;
+  letter-spacing: -0.6px !important;
+}
+
+/* Product grid and cards */
+.product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 28px !important;
+  align-items: stretch !important;
+}
+
+.product-card {
+  position: relative !important;
+  min-height: 392px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-radius: 26px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(16, 85, 38, 0.08) !important;
+  box-shadow: 0 16px 34px rgba(19, 86, 44, 0.12) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+.product-card:hover {
+  transform: translateY(-7px) !important;
+  box-shadow: 0 26px 50px rgba(19, 86, 44, 0.18) !important;
+}
+
+.product-card::after {
+  display: none !important;
+  content: none !important;
+}
+
+.product-card img {
+  width: 100% !important;
+  height: 205px !important;
+  object-fit: cover !important;
+  display: block !important;
+  background: #eef9f3 !important;
+}
+
+.product-body {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 22px !important;
+}
+
+.product-body h3 {
+  margin: 0 0 12px !important;
+  color: #105526 !important;
+  font-size: 24px !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.3px !important;
+}
+
+.product-body h3::before {
+  content: "" !important;
+}
+
+.product-body p {
+  margin: 0 0 22px !important;
+  color: #54685b !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+}
+
+.product-body p::before {
+  content: "" !important;
+}
+
+.product-body button {
+  margin-top: auto !important;
+  width: 100% !important;
+  height: 54px !important;
+  border-radius: 16px !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  background: linear-gradient(135deg, #159947, #0f7d38) !important;
+  box-shadow: 0 12px 24px rgba(19, 152, 70, 0.22) !important;
+}
+
+.product-body button:hover {
+  transform: translateY(-2px) !important;
+  background: linear-gradient(135deg, #0f7d38, #0b6830) !important;
+}
+
+/* Keep other sections clean too */
+.cart-section,
+.delivery-section,
+.invoice-section {
+  border-radius: 30px !important;
+  border: 1px solid rgba(16, 85, 38, 0.08) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fffa 100%) !important;
+  box-shadow: 0 14px 34px rgba(22, 72, 38, 0.08) !important;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .topbar h1 {
+    font-size: 38px !important;
+  }
+
+  .farm-hero h2 {
+    font-size: 34px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === FINAL PROFESSIONAL SWISS PRODUCTS PAGE END === */
+

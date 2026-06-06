@@ -1,11 +1,8 @@
-import { useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import SwissLoginImage from "./assets/swiss-login-new.png";
-import MilkPhoto from "./assets/products/milk.jpg";
-import CreamPhoto from "./assets/products/cream.jpg";
-import ButterPhoto from "./assets/products/butter.jpg";
-import BottlePhoto from "./assets/products/bottle.jpg";
+import "./App.css";
 
-type Account = {
+type UserAccount = {
   username: string;
   password: string;
 };
@@ -15,7 +12,6 @@ type Product = {
   name: string;
   price: number;
   unit: string;
-  icon: string;
   image: string;
 };
 
@@ -30,78 +26,132 @@ type DeliveryForm = {
   deliveryDate: string;
 };
 
-const accounts: Account[] = [
+const accounts: UserAccount[] = [
   { username: "fia123", password: "12345" },
   { username: "sammy@gmail.com", password: "sammy456" },
   { username: "gary@gmail.com", password: "gary789" },
-  { username: "admin@gmail.com", password: "admin123" }
+  { username: "family@gmail.com", password: "7456" },
 ];
 
 const products: Product[] = [
-  { id: 1, name: "Fresh Swiss Milk", price: 6, unit: "liter", icon: "🥛", image: MilkPhoto },
-  { id: 2, name: "Alpine Cream", price: 8, unit: "jar", icon: "🍶", image: CreamPhoto },
-  { id: 3, name: "Swiss Farm Butter", price: 10, unit: "pound", icon: "🧈", image: ButterPhoto },
-  { id: 4, name: "Morning Milking Bottle", price: 5, unit: "bottle", icon: "🐄", image: BottlePhoto }
+  {
+    id: 1,
+    name: "Fresh Swiss Milk",
+    price: 6,
+    unit: "liter",
+    image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=1000&q=85",
+  },
+  {
+    id: 2,
+    name: "Alpine Cream",
+    price: 8,
+    unit: "jar",
+    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1000&q=85",
+  },
+  {
+    id: 3,
+    name: "Swiss Farm Butter",
+    price: 10,
+    unit: "pound",
+    image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=1000&q=85",
+  },
+  {
+    id: 4,
+    name: "Morning Milking Bottle",
+    price: 5,
+    unit: "bottle",
+    image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=1000&q=85",
+  },
 ];
 
-const emptyDeliveryForm: DeliveryForm = {
-  fullName: "",
-  phone: "",
-  address: "",
-  deliveryDate: ""
-};
-
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedInUser, setLoggedInUser] = useState("");
   const [loginError, setLoginError] = useState("");
   const [welcome, setWelcome] = useState("");
 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showDeliveryForm, setShowDeliveryForm] = useState(false);
-  const [deliveryForm, setDeliveryForm] = useState<DeliveryForm>(emptyDeliveryForm);
-  const [formErrors, setFormErrors] = useState<string[]>([]);
-  const [invoice, setInvoice] = useState<DeliveryForm | null>(null);
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
+  const [formError, setFormError] = useState("");
 
-  const playLoginSounds = () => {
-    const soundFiles = ["/sounds/goat.mp3", "/sounds/cow.mp3", "/sounds/bell.mp3"];
+  const [deliveryForm, setDeliveryForm] = useState<DeliveryForm>({
+    fullName: "",
+    phone: "",
+    address: "",
+    deliveryDate: "",
+  });
 
-    soundFiles.forEach((file) => {
-      const audio = new Audio(file);
-      audio.volume = 0.45;
-      audio.play().catch(() => undefined);
+  const cowAudioRef = useRef<HTMLAudioElement | null>(null);
+  const goatAudioRef = useRef<HTMLAudioElement | null>(null);
 
-      setTimeout(() => {
-        audio.pause();
-        audio.currentTime = 0;
-      }, 15000);
-    });
+  const total = useMemo(() => {
+    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }, [cart]);
+
+  const playFarmSounds = () => {
+    const cowSound = new Audio("/sounds/cow.mp3");
+    const goatSound = new Audio("/sounds/goat.mp3");
+
+    cowAudioRef.current = cowSound;
+    goatAudioRef.current = goatSound;
+
+    cowSound.volume = 0.45;
+    goatSound.volume = 0.4;
+
+    cowSound.play().catch(() => {});
+    goatSound.play().catch(() => {});
+
+    setTimeout(() => {
+      cowSound.pause();
+      goatSound.pause();
+      cowSound.currentTime = 0;
+      goatSound.currentTime = 0;
+    }, 15000);
   };
 
   const handleLogin = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const matchedAccount = accounts.find(
+    const foundUser = accounts.find(
       (account) =>
         account.username.toLowerCase() === username.trim().toLowerCase() &&
         account.password === password.trim()
     );
 
-    if (!matchedAccount) {
+    if (!foundUser) {
       setLoginError("Invalid username or password.");
       return;
     }
 
-    playLoginSounds();
-    setLoggedInUser(matchedAccount.username);
     setLoginError("");
-    setWelcome(`Welcome ${matchedAccount.username}`);
-    setTimeout(() => setWelcome(""), 5000);
+    setIsLoggedIn(true);
+    setWelcome(`Welcome ${username}`);
+    playFarmSounds();
+
+    setTimeout(() => {
+      setWelcome("");
+    }, 5000);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUsername("");
+    setPassword("");
+    setCart([]);
+    setShowDeliveryForm(false);
+    setInvoiceOpen(false);
+    setFormError("");
+    setDeliveryForm({
+      fullName: "",
+      phone: "",
+      address: "",
+      deliveryDate: "",
+    });
   };
 
   const addToCart = (product: Product) => {
-    setInvoice(null);
     setCart((currentCart) => {
       const existingItem = currentCart.find((item) => item.id === product.id);
 
@@ -137,113 +187,102 @@ function App() {
     setCart((currentCart) => currentCart.filter((item) => item.id !== id));
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  const validateDeliveryForm = () => {
-    const errors: string[] = [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const selectedDate = deliveryForm.deliveryDate
-      ? new Date(deliveryForm.deliveryDate + "T00:00:00")
-      : null;
-
+  const openDeliveryForm = () => {
     if (cart.length === 0) {
-      errors.push("Cart cannot be empty.");
-    }
-
-    if (!deliveryForm.fullName.trim()) {
-      errors.push("Full name is required.");
-    } else if (!/^[A-Za-z ]{2,}$/.test(deliveryForm.fullName.trim())) {
-      errors.push("Name must use letters and spaces only.");
-    }
-
-    if (!deliveryForm.phone.trim()) {
-      errors.push("Phone number is required.");
-    } else if (!/^[0-9]{10,15}$/.test(deliveryForm.phone.trim())) {
-      errors.push("Phone must be 10 to 15 numbers only.");
-    }
-
-    if (!deliveryForm.address.trim()) {
-      errors.push("Delivery address is required.");
-    } else if (deliveryForm.address.trim().length < 5) {
-      errors.push("Address must be at least 5 characters.");
-    }
-
-    if (!deliveryForm.deliveryDate) {
-      errors.push("Delivery date is required.");
-    } else if (selectedDate && selectedDate < today) {
-      errors.push("Delivery date cannot be in the past.");
-    }
-
-    return errors;
-  };
-
-  const handleDeliverySubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const errors = validateDeliveryForm();
-    setFormErrors(errors);
-
-    if (errors.length > 0) {
+      setFormError("Please add at least one product to the cart first.");
       return;
     }
 
-    setInvoice(deliveryForm);
-    setShowDeliveryForm(false);
+    setFormError("");
+    setShowDeliveryForm(true);
+    setInvoiceOpen(false);
   };
 
-  const handleLogout = () => {
-    setUsername("");
-    setPassword("");
-    setLoggedInUser("");
-    setLoginError("");
-    setWelcome("");
-    setCart([]);
-    setShowDeliveryForm(false);
-    setDeliveryForm(emptyDeliveryForm);
-    setFormErrors([]);
-    setInvoice(null);
+  const validateDeliveryForm = () => {
+    const nameRegex = /^[A-Za-z ]{3,}$/;
+    const phoneRegex = /^[0-9]{10}$/;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const selectedDate = new Date(deliveryForm.deliveryDate);
+
+    if (cart.length === 0) {
+      return "Cart cannot be empty.";
+    }
+
+    if (!nameRegex.test(deliveryForm.fullName.trim())) {
+      return "Full name must use letters only and be at least 3 characters.";
+    }
+
+    if (!phoneRegex.test(deliveryForm.phone.trim())) {
+      return "Phone number must be exactly 10 digits.";
+    }
+
+    if (deliveryForm.address.trim().length < 5) {
+      return "Delivery address must be at least 5 characters.";
+    }
+
+    if (!deliveryForm.deliveryDate) {
+      return "Please select a delivery date.";
+    }
+
+    if (selectedDate < today) {
+      return "Delivery date cannot be in the past.";
+    }
+
+    return "";
   };
 
-  if (!loggedInUser) {
+  const placeOrder = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const error = validateDeliveryForm();
+
+    if (error) {
+      setFormError(error);
+      return;
+    }
+
+    setFormError("");
+    setInvoiceOpen(true);
+  };
+
+  if (!isLoggedIn) {
     return (
       <main className="login-page">
-        <section className="image-side">
-          <img src={SwissLoginImage} alt="Swiss dairy farm with dairywoman, goats, cows and Alps" />
+        <section className="photo-side">
+          <img src={SwissLoginImage} alt="Swiss dairy woman with farm animals" />
+          <div className="photo-shade">
+            <h1>Swiss Dairy Farm</h1>
+            <p>Fresh milk, cream, butter, goats, cows, and Alpine farm delivery.</p>
+          </div>
         </section>
 
-        <section className="form-side">
+        <section className="login-side">
           <form className="login-card" onSubmit={handleLogin}>
-            <p className="eyebrow">Swiss Dairy Farm</p>
-            <h1>Fresh Alpine Login</h1>
-            <p className="login-subtitle">
-              Sign in to manage milk, cream, butter, cart and delivery orders.
-            </p>
+            <p className="eyebrow">Alpine Farm Portal</p>
+            <h2>Welcome Back</h2>
+            <p className="login-text">Login to order fresh Swiss dairy products.</p>
 
-            <label>
-              Username
-              <input
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                placeholder="Enter username"
-              />
-            </label>
+            <label>Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              placeholder="Enter username"
+            />
 
-            <label>
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Enter password"
-              />
-            </label>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Enter password"
+            />
 
-            {loginError && <p className="error-text">{loginError}</p>}
+            {loginError && <p className="error">{loginError}</p>}
 
-            <button type="submit" className="main-button">
+            <button type="submit" className="primary-btn">
               Login
             </button>
           </form>
@@ -259,188 +298,149 @@ function App() {
       <header className="topbar">
         <div>
           <p className="eyebrow">Swiss Dairy Farm</p>
-          <h1>Alpine Product Dashboard</h1>
-          <p>Fresh farm products, cart, delivery form and final invoice.</p>
+          <h1>Fresh Alpine Dairy Products</h1>
+          <p>Choose your milk, cream, butter, and fresh farm bottles.</p>
         </div>
 
-        <button type="button" className="logout-button" onClick={handleLogout}>
+        <button type="button" className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
       </header>
 
-      <section className="dashboard-grid">
-        <div className="panel">
-          <h2>Products</h2>
+      <section className="farm-hero">
+        <div>
+          <h2>From our Swiss farm to your home</h2>
+          <p>Professional delivery order system with fresh products and invoice summary.</p>
+        </div>
+      </section>
 
-          <div className="products-grid">
-            {products.map((product) => (
-              <article key={product.id} className="product-card">
-                <div className="product-photo-wrap">
-                  <img className="product-photo" src={product.image} alt={product.name} />
-                  <span className="product-badge">{product.icon}</span>
-                </div>
+      <section className="products-section">
+        <h2>Our Products</h2>
+
+        <div className="product-grid">
+          {products.map((product) => (
+            <article className="product-card" key={product.id}>
+              <img src={product.image} alt={product.name} />
+              <div className="product-body">
                 <h3>{product.name}</h3>
-                <p>
-                  ${product.price} / {product.unit}
-                </p>
+                <p>${product.price} per {product.unit}</p>
                 <button type="button" onClick={() => addToCart(product)}>
                   Add to Cart
                 </button>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <aside className="panel cart-panel">
-          <h2>Your Cart</h2>
-
-          {cart.length === 0 ? (
-            <p className="muted">No products added yet.</p>
-          ) : (
-            <>
-              {cart.map((item) => (
-                <div key={item.id} className="cart-item">
-                  <div>
-                    <strong>{item.name}</strong>
-                    <p>
-                      ${item.price} × {item.quantity}
-                    </p>
-                  </div>
-
-                  <div className="cart-actions">
-                    <button type="button" onClick={() => decreaseQuantity(item.id)}>
-                      −
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button type="button" onClick={() => increaseQuantity(item.id)}>
-                      +
-                    </button>
-                    <button type="button" onClick={() => removeItem(item.id)}>
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              <div className="total-row">
-                <strong>Total</strong>
-                <strong>${total}</strong>
               </div>
-            </>
-          )}
+            </article>
+          ))}
+        </div>
+      </section>
 
-          <button
-            type="button"
-            className="main-button"
-            onClick={() => {
-              setShowDeliveryForm(true);
-              setInvoice(null);
-            }}
-          >
-            Proceed to Delivery Form
-          </button>
-        </aside>
+      <section className="cart-section">
+        <h2>Your Cart</h2>
+
+        {cart.length === 0 ? (
+          <p className="empty-cart">Your cart is empty. Add a product first.</p>
+        ) : (
+          <div className="cart-list">
+            {cart.map((item) => (
+              <div className="cart-item" key={item.id}>
+                <div>
+                  <h3>{item.name}</h3>
+                  <p>${item.price} x {item.quantity} = ${item.price * item.quantity}</p>
+                </div>
+
+                <div className="cart-actions">
+                  <button type="button" onClick={() => decreaseQuantity(item.id)}>-</button>
+                  <span>{item.quantity}</span>
+                  <button type="button" onClick={() => increaseQuantity(item.id)}>+</button>
+                  <button type="button" className="remove-btn" onClick={() => removeItem(item.id)}>
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            <h3 className="total">Total: ${total}</h3>
+          </div>
+        )}
+
+        {formError && <p className="error">{formError}</p>}
+
+        <button type="button" className="primary-btn delivery-btn" onClick={openDeliveryForm}>
+          Proceed to Delivery Form
+        </button>
       </section>
 
       {showDeliveryForm && (
-        <section className="panel delivery-panel">
+        <section className="delivery-section">
           <h2>Delivery Order Form</h2>
 
-          {formErrors.length > 0 && (
-            <div className="error-box">
-              {formErrors.map((error) => (
-                <p key={error}>{error}</p>
-              ))}
-            </div>
-          )}
+          <form className="delivery-form" onSubmit={placeOrder}>
+            <label>Full Name</label>
+            <input
+              type="text"
+              value={deliveryForm.fullName}
+              onChange={(event) =>
+                setDeliveryForm({ ...deliveryForm, fullName: event.target.value })
+              }
+              placeholder="Enter full name"
+            />
 
-          <form className="delivery-form" onSubmit={handleDeliverySubmit}>
-            <label>
-              Full Name
-              <input
-                type="text"
-                value={deliveryForm.fullName}
-                onChange={(event) =>
-                  setDeliveryForm({ ...deliveryForm, fullName: event.target.value })
-                }
-                placeholder="Customer full name"
-              />
-            </label>
+            <label>Phone Number</label>
+            <input
+              type="text"
+              value={deliveryForm.phone}
+              onChange={(event) =>
+                setDeliveryForm({ ...deliveryForm, phone: event.target.value })
+              }
+              placeholder="10 digit phone number"
+            />
 
-            <label>
-              Phone
-              <input
-                type="text"
-                value={deliveryForm.phone}
-                onChange={(event) =>
-                  setDeliveryForm({ ...deliveryForm, phone: event.target.value })
-                }
-                placeholder="Only numbers"
-              />
-            </label>
+            <label>Delivery Address</label>
+            <textarea
+              value={deliveryForm.address}
+              onChange={(event) =>
+                setDeliveryForm({ ...deliveryForm, address: event.target.value })
+              }
+              placeholder="Enter delivery address"
+            />
 
-            <label>
-              Address
-              <input
-                type="text"
-                value={deliveryForm.address}
-                onChange={(event) =>
-                  setDeliveryForm({ ...deliveryForm, address: event.target.value })
-                }
-                placeholder="Delivery address"
-              />
-            </label>
+            <label>Delivery Date</label>
+            <input
+              type="date"
+              value={deliveryForm.deliveryDate}
+              onChange={(event) =>
+                setDeliveryForm({ ...deliveryForm, deliveryDate: event.target.value })
+              }
+            />
 
-            <label>
-              Delivery Date
-              <input
-                type="date"
-                value={deliveryForm.deliveryDate}
-                onChange={(event) =>
-                  setDeliveryForm({ ...deliveryForm, deliveryDate: event.target.value })
-                }
-              />
-            </label>
+            {formError && <p className="error">{formError}</p>}
 
-            <button type="submit" className="main-button">
+            <button type="submit" className="primary-btn">
               Place Order
             </button>
           </form>
         </section>
       )}
 
-      {invoice && (
-        <section className="panel invoice-panel">
+      {invoiceOpen && (
+        <section className="invoice-section">
           <h2>Final Invoice</h2>
 
-          <div className="invoice-grid">
-            <p>
-              <strong>Name:</strong> {invoice.fullName}
-            </p>
-            <p>
-              <strong>Phone:</strong> {invoice.phone}
-            </p>
-            <p>
-              <strong>Address:</strong> {invoice.address}
-            </p>
-            <p>
-              <strong>Delivery Date:</strong> {invoice.deliveryDate}
-            </p>
-          </div>
+          <div className="invoice-card">
+            <h3>Customer Details</h3>
+            <p><strong>Name:</strong> {deliveryForm.fullName}</p>
+            <p><strong>Phone:</strong> {deliveryForm.phone}</p>
+            <p><strong>Address:</strong> {deliveryForm.address}</p>
+            <p><strong>Delivery Date:</strong> {deliveryForm.deliveryDate}</p>
 
-          <h3>Order Details</h3>
-          {cart.map((item) => (
-            <div key={item.id} className="invoice-row">
-              <span>
-                {item.name} × {item.quantity}
-              </span>
-              <strong>${item.price * item.quantity}</strong>
-            </div>
-          ))}
+            <h3>Order Details</h3>
+            {cart.map((item) => (
+              <p key={item.id}>
+                {item.name} — {item.quantity} {item.unit}(s) — ${item.price * item.quantity}
+              </p>
+            ))}
 
-          <div className="total-row invoice-total">
-            <strong>Grand Total</strong>
-            <strong>${total}</strong>
+            <h2>Total Bill: ${total}</h2>
+            <p className="thank-you">Thank you for ordering from Swiss Dairy Farm.</p>
           </div>
         </section>
       )}
