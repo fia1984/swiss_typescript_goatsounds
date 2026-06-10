@@ -65,7 +65,6 @@ const products: Product[] = [
 ];
 
 function App() {
-  const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -440,9 +439,7 @@ function App() {
               </p>
             ))}
 
-            <h2>Subtotal: ${total}</h2>
-            <h2>Delivery Fee: ${deliveryFee}</h2>
-            <h1>🇨🇭 Final Total: ${total + deliveryFee}</h1>
+            <h2>Total Bill: ${total}</h2>
             <p className="thank-you">Thank you for ordering from Swiss Dairy Farm.</p>
           </div>
         </section>
