@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState, type FormEvent } from "react";
 import SwissLoginImage from "./assets/swiss-login-new.png";
 import "./App.css";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } from "./store/cartSlice";
 
 type UserAccount = {
   username: string;
@@ -65,6 +67,8 @@ const products: Product[] = [
 ];
 
 function App() {
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart.items);
   const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -72,7 +76,7 @@ function App() {
   const [loginError, setLoginError] = useState("");
   const [welcome, setWelcome] = useState("");
 
-  const [cart, setCart] = useState<CartItem[]>([]);
+  
   const [showDeliveryForm, setShowDeliveryForm] = useState(false);
   const [invoiceOpen, setInvoiceOpen] = useState(false);
   const [formError, setFormError] = useState("");
@@ -140,7 +144,7 @@ function App() {
     setIsLoggedIn(false);
     setUsername("");
     setPassword("");
-    setCart([]);
+    dispatch(clearCart());
     setShowDeliveryForm(false);
     setInvoiceOpen(false);
     setFormError("");
@@ -152,40 +156,14 @@ function App() {
     });
   };
 
-  const addToCart = (product: Product) => {
-    setCart((currentCart) => {
-      const existingItem = currentCart.find((item) => item.id === product.id);
+  
 
-      if (existingItem) {
-        return currentCart.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
+  
 
-      return [...currentCart, { ...product, quantity: 1 }];
-    });
-  };
-
-  const increaseQuantity = (id: number) => {
-    setCart((currentCart) =>
-      currentCart.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-
-  const decreaseQuantity = (id: number) => {
-    setCart((currentCart) =>
-      currentCart
-        .map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
-  };
+  
 
   const removeItem = (id: number) => {
-    setCart((currentCart) => currentCart.filter((item) => item.id !== id));
+    dispatch(removeFromCart(id));
   };
 
   const openDeliveryForm = () => {
@@ -325,7 +303,7 @@ function App() {
               <div className="product-body">
                 <h3>{product.name}</h3>
                 <p>${product.price} per {product.unit}</p>
-                <button type="button" onClick={() => addToCart(product)}>
+                <button type="button" onClick={() => dispatch(addToCart(product))}>
                   Add to Cart
                 </button>
               </div>
@@ -349,9 +327,9 @@ function App() {
                 </div>
 
                 <div className="cart-actions">
-                  <button type="button" onClick={() => decreaseQuantity(item.id)}>-</button>
+                  <button type="button" onClick={() => dispatch(decreaseQuantity(item.id))}>-</button>
                   <span>{item.quantity}</span>
-                  <button type="button" onClick={() => increaseQuantity(item.id)}>+</button>
+                  <button type="button" onClick={() => dispatch(increaseQuantity(item.id))}>+</button>
                   <button type="button" className="remove-btn" onClick={() => removeItem(item.id)}>
                     Remove
                   </button>
