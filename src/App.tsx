@@ -67,6 +67,11 @@ const products: Product[] = [
 ];
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
+  );
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.items);
   const deliveryFee = 5;
@@ -227,7 +232,7 @@ function App() {
   };
 
   if (!isLoggedIn) {
-    return (
+return (
       <main className="login-page">
         <section className="photo-side">
           <img src={SwissLoginImage} alt="Swiss dairy woman with farm animals" />
@@ -296,8 +301,24 @@ function App() {
       <section className="products-section">
         <h2>Our Products</h2>
 
+        
+        <div style={{ margin: "20px 0", display: "flex", justifyContent: "flex-start" }}>
+          <input
+            type="text"
+            placeholder="Search dairy products..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            style={{
+              width: "260px",
+              padding: "12px 14px",
+              borderRadius: "12px",
+              border: "1px solid #cfd8d1",
+              fontSize: "15px"
+            }}
+          />
+        </div>
         <div className="product-grid">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <article className="product-card" key={product.id}>
               <img src={product.image} alt={product.name} />
               <div className="product-body">
@@ -343,12 +364,26 @@ function App() {
 
         {formError && <p className="error">{formError}</p>}
 
-        <button type="button" className="primary-btn delivery-btn" onClick={openDeliveryForm}>
-          Proceed to Delivery Form
-        </button>
+        
+            {cart.length > 0 && (
+              <button
+                type="button"
+                className="clear-cart-btn"
+                onClick={() => dispatch(clearCart())}
+              >
+                Clear Cart
+              </button>
+            )}
+{cart.length > 0 && (
+              <button type="button" className="primary-btn delivery-btn" onClick={openDeliveryForm}>
+
+    Proceed to Delivery Form
+
+  </button>
+            )}
       </section>
 
-      {showDeliveryForm && (
+      {showDeliveryForm && cart.length > 0 && (
         <section className="delivery-section">
           <h2>Delivery Order Form</h2>
 

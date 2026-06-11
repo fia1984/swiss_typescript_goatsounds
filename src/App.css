@@ -1680,3 +1680,29 @@ textarea:focus {
     font-size: 30px;
   }
 }
+
+
+.clear-cart-btn {
+  background: #0f8a3b;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(15, 138, 59, 0.25);
+  transition: 0.2s ease;
+  margin-right: 12px;
+}
+
+.clear-cart-btn:hover {
+  background: #0b7030;
+  transform: translateY(-2px);
+}
+
+
+.empty-cart-message {
+  color: #0f8a3b;
+  font-weight: 700;
+  margin-top: 12px;
+}
