@@ -1706,3 +1706,12 @@ textarea:focus {
   font-weight: 700;
   margin-top: 12px;
 }
+
+
+.no-products-found {
+  color: #0f8a3b;
+  font-weight: 700;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 18px;
+}

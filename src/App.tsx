@@ -317,6 +317,12 @@ return (
             }}
           />
         </div>
+        
+        {searchTerm.trim() !== "" && filteredProducts.length === 0 && (
+          <p className="no-products-found">
+            No dairy products found. Try milk, cream, butter, or bottle.
+          </p>
+        )}
         <div className="product-grid">
           {filteredProducts.map((product) => (
             <article className="product-card" key={product.id}>
