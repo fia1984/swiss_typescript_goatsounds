@@ -1550,3 +1550,133 @@ textarea:focus {
 
 /* === FINAL PROFESSIONAL SWISS PRODUCTS PAGE END === */
 
+
+/* Mobile responsive fix - keeps desktop unchanged */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .login-page {
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 16px;
+    background: #eef8f0;
+  }
+
+  .image-side {
+    width: 100%;
+    height: 260px;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .form-side {
+    width: 100%;
+    min-height: auto;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 22px;
+    border-radius: 24px;
+  }
+
+  .login-card h1,
+  .login-card h2 {
+    font-size: 34px;
+    line-height: 1.05;
+  }
+
+  .login-card p {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .login-card input {
+    width: 100%;
+    min-height: 48px;
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  .login-card button {
+    width: 100%;
+    min-height: 50px;
+    font-size: 16px;
+  }
+
+  .app {
+    padding: 16px;
+  }
+
+  .dashboard,
+  .products-section,
+  .cart-section,
+  .delivery-section,
+  .invoice-section {
+    width: 100%;
+  }
+
+  .topbar,
+  .hero,
+  .cart,
+  .delivery-form,
+  .invoice-card {
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .topbar h1,
+  .hero h1 {
+    font-size: 34px;
+    line-height: 1.1;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-card {
+    width: 100%;
+  }
+
+  button {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 430px) {
+  .login-page {
+    padding: 12px;
+  }
+
+  .image-side {
+    height: 220px;
+  }
+
+  .login-card {
+    padding: 24px 18px;
+  }
+
+  .login-card h1,
+  .login-card h2 {
+    font-size: 30px;
+  }
+
+  .topbar h1,
+  .hero h1 {
+    font-size: 30px;
+  }
+}
