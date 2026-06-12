@@ -3,7 +3,6 @@ import SwissLoginImage from "./assets/swiss-login-new.png";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } from "./store/cartSlice";
-import { addOrder, updateOrderStatus, cancelOrder } from "./store/ordersSlice";
 
 type UserAccount = {
   username: string;
@@ -67,11 +66,6 @@ const products: Product[] = [
   },
 ];
 
-const createOrderNumber = () => {
-  return `SWISS-${Date.now().toString().slice(-6)}`;
-};
-
-
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -80,7 +74,6 @@ function App() {
   );
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.items);
-  const orders = useAppSelector((state) => state.orders.orders);
   const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -99,7 +92,6 @@ function App() {
     address: "",
     deliveryDate: "",
   });
-  const [orderNumber, setOrderNumber] = useState<string>("");
 
   const cowAudioRef = useRef<HTMLAudioElement | null>(null);
   const goatAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -235,28 +227,8 @@ function App() {
       return;
     }
 
-    dispatch(
-      addOrder({
-        customerName: deliveryForm.fullName,
-        phone: deliveryForm.phone,
-        address: deliveryForm.address,
-        deliveryDate: deliveryForm.deliveryDate,
-        items: cart.map((item) => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          unit: item.unit,
-          quantity: item.quantity,
-        })),
-        total:
-          cart.reduce((sum, item) => sum + item.price * item.quantity, 0) +
-          deliveryFee,
-      })
-    );
-
     setFormError("");
     setInvoiceOpen(true);
-    setShowDeliveryForm(false);
   };
 
   if (!isLoggedIn) {
@@ -299,7 +271,7 @@ return (
             </button>
           </form>
         </section>
-    </main>
+      </main>
     );
   }
 
@@ -345,12 +317,6 @@ return (
             }}
           />
         </div>
-        
-        {searchTerm.trim() !== "" && filteredProducts.length === 0 && (
-          <p className="no-products-found">
-            No dairy products found. Try milk, cream, butter, or bottle.
-          </p>
-        )}
         <div className="product-grid">
           {filteredProducts.map((product) => (
             <article className="product-card" key={product.id}>
@@ -400,24 +366,16 @@ return (
 
         
             {cart.length > 0 && (
-              <button
-                type="button"
-                className="clear-cart-btn"
-                onClick={() => dispatch(clearCart())}
-              >
+              <button type="button" onClick={() => dispatch(clearCart())}>
                 Clear Cart
               </button>
             )}
-{cart.length > 0 && (
-              <button type="button" className="primary-btn delivery-btn" onClick={openDeliveryForm}>
-
-    Proceed to Delivery Form
-
-  </button>
-            )}
+<button type="button" className="primary-btn delivery-btn" onClick={openDeliveryForm}>
+          Proceed to Delivery Form
+        </button>
       </section>
 
-      {showDeliveryForm && cart.length > 0 && (
+      {showDeliveryForm && (
         <section className="delivery-section">
           <h2>Delivery Order Form</h2>
 
@@ -492,58 +450,6 @@ return (
             <h1>🇨🇭 Final Total: ${total + deliveryFee}</h1>
             <p className="thank-you">Thank you for ordering from Swiss Dairy Farm.</p>
           </div>
-        </section>
-      )}
-
-      {orders.length > 0 && (
-        <section className="invoice-section">
-          <h2>Saved Orders</h2>
-
-          {orders.map((order) => (
-            <div className="invoice-card" key={order.id}>
-              <h3>{order.customerName}</h3>
-
-              <p><strong>Phone:</strong> {order.phone}</p>
-              <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
-              <p><strong>Status:</strong> {order.status}</p>
-              <p><strong>Total:</strong> ${order.total}</p>
-
-              <h3>Items</h3>
-              {order.items.map((item) => (
-                <p key={item.id}>
-                  {item.name} — {item.quantity} {item.unit}(s)
-                </p>
-              ))}
-
-              <button
-                type="button"
-                className="primary-btn"
-                onClick={() =>
-                  dispatch(updateOrderStatus({ id: order.id, status: "shipped" }))
-                }
-              >
-                Mark Shipped
-              </button>
-
-              <button
-                type="button"
-                className="primary-btn"
-                onClick={() =>
-                  dispatch(updateOrderStatus({ id: order.id, status: "delivered" }))
-                }
-              >
-                Mark Delivered
-              </button>
-
-              <button
-                type="button"
-                className="logout-btn"
-                onClick={() => dispatch(cancelOrder(order.id))}
-              >
-                Cancel Order
-              </button>
-            </div>
-          ))}
         </section>
       )}
     </main>
