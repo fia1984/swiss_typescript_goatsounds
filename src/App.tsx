@@ -299,13 +299,6 @@ return (
             </button>
           </form>
         </section>
-      <button
-        type="button"
-        className="fixed-print-invoice-btn"
-        onClick={() => window.print()}
-      >
-        Print Invoice
-      </button>
     </main>
     );
   }
@@ -548,6 +541,14 @@ return (
                 onClick={() => dispatch(cancelOrder(order.id))}
               >
                 Cancel Order
+              </button>
+
+              <button
+                type="button"
+                className="print-btn"
+                onClick={() => window.print()}
+              >
+                Print Invoice
               </button>
             </div>
           ))}
