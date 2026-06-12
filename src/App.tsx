@@ -299,11 +299,13 @@ return (
             </button>
           </form>
         </section>
-      {orderNumber && (
-        <button type="button" className="print-btn" onClick={() => window.print()}>
-          Print Invoice
-        </button>
-      )}
+      <button
+        type="button"
+        className="fixed-print-invoice-btn"
+        onClick={() => window.print()}
+      >
+        Print Invoice
+      </button>
     </main>
     );
   }

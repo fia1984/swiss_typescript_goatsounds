@@ -1766,3 +1766,36 @@ textarea:focus {
     background: white !important;
   }
 }
+
+
+.fixed-print-invoice-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  background: #14532d;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 13px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(20, 83, 45, 0.3);
+  transition: 0.2s ease;
+}
+
+.fixed-print-invoice-btn:hover {
+  transform: translateY(-2px);
+  background: #0f3f22;
+}
+
+@media print {
+  .fixed-print-invoice-btn,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+}
