@@ -3,6 +3,7 @@ import SwissLoginImage from "./assets/swiss-login-new.png";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } from "./store/cartSlice";
+import { addOrder } from "./store/ordersSlice";
 
 type UserAccount = {
   username: string;
@@ -226,6 +227,25 @@ function App() {
       setFormError(error);
       return;
     }
+
+    dispatch(
+      addOrder({
+        customerName: deliveryForm.fullName,
+        phone: deliveryForm.phone,
+        address: deliveryForm.address,
+        deliveryDate: deliveryForm.deliveryDate,
+        items: cart.map((item) => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          unit: item.unit,
+          quantity: item.quantity,
+        })),
+        total:
+          cart.reduce((sum, item) => sum + item.price * item.quantity, 0) +
+          deliveryFee,
+      })
+    );
 
     setFormError("");
     setInvoiceOpen(true);
