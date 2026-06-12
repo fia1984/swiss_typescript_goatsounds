@@ -250,6 +250,7 @@ function App() {
 
     setFormError("");
     setInvoiceOpen(true);
+    setShowDeliveryForm(false);
   };
 
   if (!isLoggedIn) {
