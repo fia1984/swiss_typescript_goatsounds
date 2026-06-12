@@ -67,6 +67,11 @@ const products: Product[] = [
   },
 ];
 
+const createOrderNumber = () => {
+  return `SWISS-${Date.now().toString().slice(-6)}`;
+};
+
+
 function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -94,6 +99,7 @@ function App() {
     address: "",
     deliveryDate: "",
   });
+  const [orderNumber, setOrderNumber] = useState<string>("");
 
   const cowAudioRef = useRef<HTMLAudioElement | null>(null);
   const goatAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -293,7 +299,12 @@ return (
             </button>
           </form>
         </section>
-      </main>
+            {orderNumber && (
+        <button type="button" className="print-btn" onClick={() => window.print()}>
+          Print Invoice
+        </button>
+      )}
+    </main>
     );
   }
 
