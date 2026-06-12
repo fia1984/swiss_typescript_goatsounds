@@ -3,7 +3,7 @@ import SwissLoginImage from "./assets/swiss-login-new.png";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } from "./store/cartSlice";
-import { addOrder } from "./store/ordersSlice";
+import { addOrder, updateOrderStatus, cancelOrder } from "./store/ordersSlice";
 
 type UserAccount = {
   username: string;
@@ -75,6 +75,7 @@ function App() {
   );
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.items);
+  const orders = useAppSelector((state) => state.orders.orders);
   const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -484,6 +485,58 @@ return (
             <h1>🇨🇭 Final Total: ${total + deliveryFee}</h1>
             <p className="thank-you">Thank you for ordering from Swiss Dairy Farm.</p>
           </div>
+        </section>
+      )}
+
+      {orders.length > 0 && (
+        <section className="invoice-section">
+          <h2>Saved Orders</h2>
+
+          {orders.map((order) => (
+            <div className="invoice-card" key={order.id}>
+              <h3>{order.customerName}</h3>
+
+              <p><strong>Phone:</strong> {order.phone}</p>
+              <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
+              <p><strong>Status:</strong> {order.status}</p>
+              <p><strong>Total:</strong> ${order.total}</p>
+
+              <h3>Items</h3>
+              {order.items.map((item) => (
+                <p key={item.id}>
+                  {item.name} — {item.quantity} {item.unit}(s)
+                </p>
+              ))}
+
+              <button
+                type="button"
+                className="primary-btn"
+                onClick={() =>
+                  dispatch(updateOrderStatus({ id: order.id, status: "shipped" }))
+                }
+              >
+                Mark Shipped
+              </button>
+
+              <button
+                type="button"
+                className="primary-btn"
+                onClick={() =>
+                  dispatch(updateOrderStatus({ id: order.id, status: "delivered" }))
+                }
+              >
+                Mark Delivered
+              </button>
+
+              <button
+                type="button"
+                className="logout-btn"
+                onClick={() => dispatch(cancelOrder(order.id))}
+              >
+                Cancel Order
+              </button>
+            </div>
+          ))}
         </section>
       )}
     </main>
