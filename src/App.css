@@ -1717,13 +1717,33 @@ textarea:focus {
 }
 
 
+
+.print-btn:hover {
+  transform: translateY(-2px);
+  background: #0f3f22;
+}
+
+@media print {
+  .logout-btn,
+  .print-btn,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+}
+
+
 .print-btn {
-  margin-top: 18px;
+  display: inline-block;
+  margin: 18px 0;
   background: #14532d;
   color: white;
   border: none;
   border-radius: 12px;
-  padding: 12px 18px;
+  padding: 12px 20px;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(20, 83, 45, 0.25);
@@ -1736,9 +1756,9 @@ textarea:focus {
 }
 
 @media print {
-  .logout-btn,
+  button,
   .print-btn,
-  button {
+  .logout-btn {
     display: none !important;
   }
 
