@@ -1828,3 +1828,39 @@ textarea:focus {
     display: block;
   }
 }
+
+/* Final saved orders button alignment fix */
+.saved-orders button,
+.orders-section button,
+.order-card button {
+  width: 100%;
+  display: block;
+  margin-top: 18px;
+}
+
+.saved-orders .logout-btn,
+.orders-section .logout-btn,
+.order-card .logout-btn {
+  width: 100%;
+  display: block;
+  margin-top: 18px;
+  background: #14532d;
+}
+
+.saved-orders .print-btn,
+.orders-section .print-btn,
+.order-card .print-btn {
+  width: 100%;
+  display: block;
+  margin-top: 18px;
+  background: #14532d;
+}
+
+.saved-orders .logout-btn:hover,
+.orders-section .logout-btn:hover,
+.order-card .logout-btn:hover,
+.saved-orders .print-btn:hover,
+.orders-section .print-btn:hover,
+.order-card .print-btn:hover {
+  background: #0f3f22;
+}
