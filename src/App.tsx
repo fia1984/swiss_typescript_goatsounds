@@ -82,11 +82,13 @@ function App() {
 
   const keepOrder = () => {
     if (cancelConfirmOrderId) {
-      setKeptOrderIds((currentIds) =>
-        currentIds.includes(cancelConfirmOrderId)
-          ? currentIds
-          : [...currentIds, cancelConfirmOrderId]
-      );
+      setKeptOrderIds((currentIds) => {
+        if (currentIds.includes(cancelConfirmOrderId)) {
+          return currentIds;
+        }
+
+        return [...currentIds, cancelConfirmOrderId];
+      });
     }
 
     setCancelConfirmOrderId(null);
@@ -583,7 +585,7 @@ return (
           ))}
         </section>
       )}
-      {cancelConfirmOrderId && (
+      {cancelConfirmOrderId !== null && (
         <div className="cancel-confirm-overlay">
           <div className="cancel-confirm-box">
             <h3>Cancel Order?</h3>
