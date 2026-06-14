@@ -73,27 +73,30 @@ const createOrderNumber = () => {
 
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
-  );
-  const dispatch = useAppDispatch();
   const [cancelConfirmOrderId, setCancelConfirmOrderId] = useState<string | null>(null);
 
   const handleCancelOrder = (orderId: string) => {
     setCancelConfirmOrderId(orderId);
   };
 
+  const keepOrder = () => {
+    setCancelConfirmOrderId(null);
+  };
+
   const confirmCancelOrder = () => {
-    if (cancelConfirmOrderId) {
-      dispatch(cancelOrder(cancelConfirmOrderId));
-      setCancelConfirmOrderId(null);
-    }
+    if (!cancelConfirmOrderId) return;
+    dispatch(cancelOrder(cancelConfirmOrderId));
+    setCancelConfirmOrderId(null);
   };
 
 
-  const cart = useAppSelector((state) => state.cart.items);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
+  );
+  const dispatch = useAppDispatch();
+const cart = useAppSelector((state) => state.cart.items);
   const orders = useAppSelector((state) => state.orders.orders);
   const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -573,14 +576,16 @@ return (
           <div className="cancel-confirm-box">
             <h3>Cancel Order?</h3>
             <p>Are you sure you want to cancel this order?</p>
+
             <div className="cancel-confirm-actions">
               <button
                 type="button"
                 className="cancel-confirm-no"
-                onClick={() => setCancelConfirmOrderId(null)}
+                onClick={keepOrder}
               >
                 No, Keep Order
               </button>
+
               <button
                 type="button"
                 className="cancel-confirm-yes"
