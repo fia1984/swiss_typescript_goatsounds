@@ -74,12 +74,21 @@ const createOrderNumber = () => {
 
 function App() {
   const [cancelConfirmOrderId, setCancelConfirmOrderId] = useState<string | null>(null);
+  const [keptOrderIds, setKeptOrderIds] = useState<string[]>([]);
 
   const handleCancelOrder = (orderId: string) => {
     setCancelConfirmOrderId(orderId);
   };
 
   const keepOrder = () => {
+    if (cancelConfirmOrderId) {
+      setKeptOrderIds((currentIds) =>
+        currentIds.includes(cancelConfirmOrderId)
+          ? currentIds
+          : [...currentIds, cancelConfirmOrderId]
+      );
+    }
+
     setCancelConfirmOrderId(null);
   };
 
@@ -522,7 +531,10 @@ return (
 
               <p><strong>Phone:</strong> {order.phone}</p>
               <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
-              <p><strong>Status:</strong> {order.status}</p>
+              <p>
+                <strong>Status:</strong>{" "}
+                {keptOrderIds.includes(order.id) ? "Order kept" : order.status}
+              </p>
               <p><strong>Total:</strong> ${order.total}</p>
 
               <h3>Items</h3>
