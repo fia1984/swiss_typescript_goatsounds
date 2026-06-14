@@ -1864,3 +1864,25 @@ textarea:focus {
 .order-card .print-btn:hover {
   background: #0f3f22;
 }
+
+
+/* cancel-order-btn final full width fix */
+.saved-order-action-btn,
+.cancel-order-btn {
+  width: 100% !important;
+  max-width: none !important;
+  display: block !important;
+  margin: 18px 0 0 0 !important;
+  padding: 16px 20px !important;
+  border-radius: 16px !important;
+  text-align: center !important;
+  background: #14532d !important;
+  color: white !important;
+  font-weight: 700 !important;
+  box-shadow: 0 10px 24px rgba(20, 83, 45, 0.22) !important;
+}
+
+.cancel-order-btn:hover {
+  background: #0f3f22 !important;
+  transform: translateY(-2px);
+}

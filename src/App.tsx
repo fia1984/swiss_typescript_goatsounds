@@ -537,7 +537,7 @@ return (
 
               <button
                 type="button"
-                className="logout-btn"
+                className="saved-order-action-btn cancel-order-btn"
                 onClick={() => dispatch(cancelOrder(order.id))}
               >
                 Cancel Order
