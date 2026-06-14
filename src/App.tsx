@@ -533,10 +533,7 @@ return (
 
               <p><strong>Phone:</strong> {order.phone}</p>
               <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
-              <p>
-                <strong>Status:</strong>{" "}
-                {keptOrderIds.includes(order.id) ? "Order kept" : order.status}
-              </p>
+              <p><strong>Status:</strong> {keptOrderIds.includes(order.id) ? "Order kept" : order.status}</p>
               <p><strong>Total:</strong> ${order.total}</p>
 
               <h3>Items</h3>
@@ -569,7 +566,7 @@ return (
               <button
                 type="button"
                 className="saved-order-action-btn cancel-order-btn"
-                onClick={() => handleCancelOrder(order.id)}
+                onClick={() => setCancelConfirmOrderId(order.id)}
               >
                 Cancel Order
               </button>
@@ -585,7 +582,7 @@ return (
           ))}
         </section>
       )}
-      {cancelConfirmOrderId !== null && (
+      {cancelConfirmOrderId && (
         <div className="cancel-confirm-overlay">
           <div className="cancel-confirm-box">
             <h3>Cancel Order?</h3>
@@ -595,7 +592,14 @@ return (
               <button
                 type="button"
                 className="cancel-confirm-no"
-                onClick={keepOrder}
+                onClick={() => {
+                  setKeptOrderIds((currentIds) =>
+                    currentIds.includes(cancelConfirmOrderId)
+                      ? currentIds
+                      : [...currentIds, cancelConfirmOrderId]
+                  );
+                  setCancelConfirmOrderId(null);
+                }}
               >
                 No, Keep Order
               </button>
@@ -603,7 +607,10 @@ return (
               <button
                 type="button"
                 className="cancel-confirm-yes"
-                onClick={confirmCancelOrder}
+                onClick={() => {
+                  dispatch(cancelOrder(cancelConfirmOrderId));
+                  setCancelConfirmOrderId(null);
+                }}
               >
                 Yes, Cancel Order
               </button>
