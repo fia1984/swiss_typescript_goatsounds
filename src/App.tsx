@@ -79,6 +79,20 @@ function App() {
     product.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
   );
   const dispatch = useAppDispatch();
+  const [cancelConfirmOrderId, setCancelConfirmOrderId] = useState<string | null>(null);
+
+  const handleCancelOrder = (orderId: string) => {
+    setCancelConfirmOrderId(orderId);
+  };
+
+  const confirmCancelOrder = () => {
+    if (cancelConfirmOrderId) {
+      dispatch(cancelOrder(cancelConfirmOrderId));
+      setCancelConfirmOrderId(null);
+    }
+  };
+
+
   const cart = useAppSelector((state) => state.cart.items);
   const orders = useAppSelector((state) => state.orders.orders);
   const deliveryFee = 5;
@@ -302,15 +316,7 @@ return (
     </main>
     );
   }
-
-  const handleCancelOrder = (orderId: string) => {
-    const confirmed = window.confirm("Are you sure you want to cancel this order?");
-    if (confirmed) {
-      dispatch(cancelOrder(orderId));
-    }
-  };
-
-  return (
+return (
     <main className="app">
       {welcome && <div className="welcome-banner">{welcome}</div>}
 
@@ -561,6 +567,30 @@ return (
             </div>
           ))}
         </section>
+      )}
+      {cancelConfirmOrderId && (
+        <div className="cancel-confirm-overlay">
+          <div className="cancel-confirm-box">
+            <h3>Cancel Order?</h3>
+            <p>Are you sure you want to cancel this order?</p>
+            <div className="cancel-confirm-actions">
+              <button
+                type="button"
+                className="cancel-confirm-no"
+                onClick={() => setCancelConfirmOrderId(null)}
+              >
+                No, Keep Order
+              </button>
+              <button
+                type="button"
+                className="cancel-confirm-yes"
+                onClick={confirmCancelOrder}
+              >
+                Yes, Cancel Order
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );

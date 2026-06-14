@@ -1919,3 +1919,78 @@ textarea:focus {
 .print-btn {
   margin-bottom: 16px !important;
 }
+
+
+/* Custom cancel confirmation modal */
+.cancel-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 30, 18, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 20px;
+}
+
+.cancel-confirm-box {
+  width: 100%;
+  max-width: 430px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 24px 60px rgba(10, 30, 18, 0.28);
+  text-align: center;
+  border: 1px solid #d9efe0;
+}
+
+.cancel-confirm-box h3 {
+  margin: 0 0 10px;
+  color: #14532d;
+  font-size: 26px;
+}
+
+.cancel-confirm-box p {
+  margin: 0 0 22px;
+  color: #244c33;
+  font-size: 17px;
+}
+
+.cancel-confirm-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.cancel-confirm-actions button {
+  flex: 1;
+  margin-top: 0 !important;
+  width: auto !important;
+  border-radius: 14px !important;
+  padding: 14px 16px !important;
+  font-weight: 800 !important;
+}
+
+.cancel-confirm-no {
+  background: #e8f5ec !important;
+  color: #14532d !important;
+  box-shadow: none !important;
+}
+
+.cancel-confirm-yes {
+  background: #159947 !important;
+  color: white !important;
+}
+
+.cancel-confirm-no:hover {
+  background: #d9efe0 !important;
+}
+
+.cancel-confirm-yes:hover {
+  background: #0f7f38 !important;
+}
+
+@media (max-width: 520px) {
+  .cancel-confirm-actions {
+    flex-direction: column;
+  }
+}
