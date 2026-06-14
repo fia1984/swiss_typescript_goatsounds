@@ -501,7 +501,8 @@ return (
 
           {orders.map((order) => (
             <div className="invoice-card" key={order.id}>
-              <h3>{order.customerName}</h3>
+              
+              <p><strong>Order Number:</strong> {order.id}</p><h3>{order.customerName}</h3>
 
               <p><strong>Phone:</strong> {order.phone}</p>
               <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
