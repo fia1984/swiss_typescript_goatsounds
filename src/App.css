@@ -1799,3 +1799,32 @@ textarea:focus {
     background: white !important;
   }
 }
+
+
+/* Saved Orders button spacing fix */
+.saved-orders button,
+.orders-section button,
+.order-card button {
+  margin-top: 14px;
+  width: 100%;
+}
+
+.saved-orders .logout-btn,
+.orders-section .logout-btn,
+.order-card .logout-btn {
+  margin-top: 16px;
+}
+
+.print-btn {
+  margin-top: 16px;
+  width: 100%;
+}
+
+@media (min-width: 700px) {
+  .saved-orders button,
+  .orders-section button,
+  .order-card button,
+  .print-btn {
+    display: block;
+  }
+}
