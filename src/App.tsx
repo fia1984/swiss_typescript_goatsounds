@@ -303,6 +303,13 @@ return (
     );
   }
 
+  const handleCancelOrder = (orderId: string) => {
+    const confirmed = window.confirm("Are you sure you want to cancel this order?");
+    if (confirmed) {
+      dispatch(cancelOrder(orderId));
+    }
+  };
+
   return (
     <main className="app">
       {welcome && <div className="welcome-banner">{welcome}</div>}
@@ -539,7 +546,7 @@ return (
               <button
                 type="button"
                 className="saved-order-action-btn cancel-order-btn"
-                onClick={() => dispatch(cancelOrder(order.id))}
+                onClick={() => handleCancelOrder(order.id)}
               >
                 Cancel Order
               </button>
