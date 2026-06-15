@@ -85,7 +85,6 @@ function App() {
   const [keptOrderIds, setKeptOrderIds] = useState<string[]>([]);
 
   const handleCancelOrder = (orderId: string) => {
-    setKeptOrderIds((currentIds) => currentIds.filter((id) => id !== orderId));
     setCancelConfirmOrderId(orderId);
   };
 
@@ -104,9 +103,6 @@ function App() {
   const confirmCancelOrder = () => {
     if (!cancelConfirmOrderId) return;
 
-    setKeptOrderIds((currentIds) =>
-      currentIds.filter((id) => id !== cancelConfirmOrderId)
-    );
     dispatch(cancelOrder(cancelConfirmOrderId));
     setCancelConfirmOrderId(null);
   };
@@ -537,7 +533,7 @@ return (
 
               <p><strong>Phone:</strong> {order.phone}</p>
               <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
-              <p><strong>Status:</strong> {order.status === "canceled" ? "canceled" : keptOrderIds.includes(order.id) ? "Order kept" : order.status}</p>
+              <p><strong>Status:</strong> {keptOrderIds.includes(order.id) ? "Order kept" : order.status}</p>
               <p><strong>Total:</strong> ${order.total}</p>
 
               <h3>Items</h3>
