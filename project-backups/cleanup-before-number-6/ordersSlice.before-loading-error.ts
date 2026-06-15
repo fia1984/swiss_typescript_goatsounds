@@ -24,36 +24,16 @@ export type Order = {
 
 type OrdersState = {
   orders: Order[];
-
-  loading: boolean;
-  error: string;
 };
 
 const initialState: OrdersState = {
   orders: [],
-  loading: false,
-  error: "",
 };
 
 const ordersSlice = createSlice({
   name: "orders",
   initialState,
   reducers: {
-    loadOrdersStart: (state) => {
-      state.loading = true;
-      state.error = "";
-    },
-
-    loadOrdersSuccess: (state) => {
-      state.loading = false;
-      state.error = "";
-    },
-
-    loadOrdersError: (state, action: { payload: string }) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-
     addOrder: (
       state,
       action: PayloadAction<Omit<Order, "id" | "status" | "createdAt">>
@@ -97,9 +77,6 @@ export const {
   addOrder,
   updateOrderStatus,
   cancelOrder,
-  loadOrdersStart,
-  loadOrdersSuccess,
-  loadOrdersError,
   clearOrders,
 } = ordersSlice.actions;
 

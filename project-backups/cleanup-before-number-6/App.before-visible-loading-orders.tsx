@@ -1,16 +1,9 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import SwissLoginImage from "./assets/swiss-login-new.png";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { addToCart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } from "./store/cartSlice";
-import {
-  addOrder,
-  updateOrderStatus,
-  cancelOrder,
-  loadOrdersStart,
-  loadOrdersSuccess,
-  loadOrdersError,
-} from "./store/ordersSlice";
+import { addOrder, updateOrderStatus, cancelOrder } from "./store/ordersSlice";
 
 type UserAccount = {
   username: string;
@@ -88,22 +81,6 @@ function App() {
     product.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
   );
   const dispatch = useAppDispatch();
-
-  const handleReloadOrders = () => {
-    dispatch(loadOrdersStart());
-
-    setTimeout(() => {
-      dispatch(loadOrdersSuccess());
-    }, 5000);
-  };
-
-  const handleOrderError = () => {
-    dispatch(loadOrdersError("Something went wrong while loading orders."));
-  };
-
-  const clearOrderMessage = () => {
-    dispatch(loadOrdersSuccess());
-  };
   const [cancelConfirmOrderId, setCancelConfirmOrderId] = useState<string | null>(null);
   const [keptOrderIds, setKeptOrderIds] = useState<string[]>([]);
 
@@ -125,7 +102,7 @@ function App() {
 
 
 const cart = useAppSelector((state) => state.cart.items);
-  const { orders, loading, error } = useAppSelector((state) => state.orders);
+  const orders = useAppSelector((state) => state.orders.orders);
   const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -190,18 +167,6 @@ const cart = useAppSelector((state) => state.cart.items);
 
     setLoginError("");
     setIsLoggedIn(true);
-
-      // NUMBER 6: show loading after login
-      dispatch(loadOrdersStart());
-      setTimeout(() => {
-        dispatch(loadOrdersSuccess());
-      }, 10000);
-
-      // Orders loading starts after login so user can actually see it
-      dispatch(loadOrdersStart());
-      setTimeout(() => {
-        dispatch(loadOrdersSuccess());
-      }, 10000);
     setWelcome(`Welcome ${username}`);
     playFarmSounds();
 
@@ -554,28 +519,6 @@ return (
       {orders.length > 0 && (
         <section className="invoice-section">
           <h2>Saved Orders</h2>
-          <div className="order-tools">
-            <button type="button" onClick={handleReloadOrders}>
-              Reload Orders
-            </button>
-
-            <button type="button" onClick={handleOrderError}>
-              Test Error
-            </button>
-
-            <button type="button" onClick={clearOrderMessage}>
-              Clear Message
-            </button>
-          </div>
-
-          {loading && <p className="order-message">Loading orders...</p>}
-
-          {error && <p className="order-error">{error}</p>}
-
-
-          {loading && <p className="order-message">Loading orders...</p>}
-
-          {error && <p className="order-error">{error}</p>}
 
           {orders.map((order) => (
             <div className="invoice-card" key={order.id}>

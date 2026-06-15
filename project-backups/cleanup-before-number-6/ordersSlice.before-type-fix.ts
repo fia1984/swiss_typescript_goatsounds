@@ -24,9 +24,6 @@ export type Order = {
 
 type OrdersState = {
   orders: Order[];
-
-  loading: boolean;
-  error: string;
 };
 
 const initialState: OrdersState = {
@@ -49,7 +46,7 @@ const ordersSlice = createSlice({
       state.error = "";
     },
 
-    loadOrdersError: (state, action: { payload: string }) => {
+    loadOrdersError: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
