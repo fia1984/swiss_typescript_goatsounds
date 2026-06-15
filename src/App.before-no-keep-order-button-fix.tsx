@@ -107,7 +107,6 @@ function App() {
     setKeptOrderIds((currentIds) =>
       currentIds.filter((id) => id !== cancelConfirmOrderId)
     );
-
     dispatch(cancelOrder(cancelConfirmOrderId));
     setCancelConfirmOrderId(null);
   };

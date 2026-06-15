@@ -1994,3 +1994,20 @@ textarea:focus {
     flex-direction: column;
   }
 }
+
+
+/* No Keep Order light green final style */
+.cancel-confirm-no {
+  background: #e8f5ec !important;
+  color: #14532d !important;
+  box-shadow: none !important;
+}
+
+.cancel-confirm-no:hover {
+  background: #d9efe0 !important;
+}
+
+.cancel-confirm-yes {
+  background: #159947 !important;
+  color: white !important;
+}
