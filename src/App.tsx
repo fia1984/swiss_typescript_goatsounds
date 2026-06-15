@@ -75,13 +75,20 @@ const products: Product[] = [
 ];
 
 const createOrderNumber = () => {
-  return `SWISS-${Date.now().toString().slice(-6)}`;
+  return `SWISS-€{Date.now().toString().slice(-6)}`;
 };
 
+
+function getWelcomeName(value: string) {
+  const cleaned = value.split("@")[0].replace(/[0-9]/g, "");
+  if (!cleaned) return value;
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase();
+}
 
 function App() {
 
 
+  const [orderToCancel, setOrderToCancel] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const filteredProducts = products.filter((product) =>
@@ -141,6 +148,8 @@ const cart = useAppSelector((state) => state.cart.items);
   );
   const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUsername, setLoggedInUsername] = useState("");
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -202,7 +211,29 @@ const cart = useAppSelector((state) => state.cart.items);
     }
 
     setLoginError("");
-    setIsLoggedIn(true);
+    setLoggedInUsername(username);
+      setShowWelcomeMessage(true);
+
+      setTimeout(() => {
+        setShowWelcomeMessage(false);
+      }, 5000);
+
+      // WELCOME LOGIN FIX
+      setLoggedInUsername(username);
+      setShowWelcomeMessage(true);
+
+      setTimeout(() => {
+        setShowWelcomeMessage(false);
+      }, 5000);
+
+      setLoggedInUsername(username);
+      setShowWelcomeMessage(true);
+
+      setTimeout(() => {
+        setShowWelcomeMessage(false);
+      }, 5000);
+
+      setIsLoggedIn(true);
 
       // NUMBER 6: show loading after login
       dispatch(loadOrdersStart());
@@ -215,7 +246,7 @@ const cart = useAppSelector((state) => state.cart.items);
       setTimeout(() => {
         dispatch(loadOrdersSuccess());
       }, 10000);
-    setWelcome(`Welcome ${username}`);
+    setWelcome(``);
     playFarmSounds();
 
     setTimeout(() => {
@@ -369,6 +400,34 @@ return (
             </button>
           </form>
         </section>
+
+      {orderToCancel !== null && (
+        <div className="popup-overlay">
+          <div className="cancel-popup">
+            <h2>Cancel this order?</h2>
+            <p>Please confirm what you want to do with this order.</p>
+
+            <div className="popup-buttons">
+              <button
+                type="button"
+                className="popup-btn cancel-confirm-btn"
+                onClick={confirmCancelOrder}
+              >
+                Yes, Cancel Order
+              </button>
+
+              <button
+                type="button"
+                className="popup-btn keep-order-btn"
+                onClick={keepOrder}
+              >
+                No, Keep Order
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
     );
   }
@@ -379,6 +438,13 @@ return (
       <header className="topbar">
         <div>
           <p className="eyebrow">Swiss Dairy Farm</p>
+          
+      {showWelcomeMessage && (
+        <div className="welcome-banner">
+          Welcome {getWelcomeName(loggedInUsername)}
+        </div>
+      )}
+
           <h1>Fresh Alpine Dairy Products</h1>
           <p>Choose your milk, cream, butter, and fresh farm bottles.</p>
         </div>
@@ -426,7 +492,7 @@ return (
               <img src={product.image} alt={product.name} />
               <div className="product-body">
                 <h3>{product.name}</h3>
-                <p>${product.price} per {product.unit}</p>
+                <p>€{product.price} per {product.unit}</p>
                 <button type="button" onClick={() => dispatch(addToCart(product))}>
                   Add to Cart
                 </button>
@@ -447,7 +513,7 @@ return (
               <div className="cart-item" key={item.id}>
                 <div>
                   <h3>{item.name}</h3>
-                  <p>${item.price} x {item.quantity} = ${item.price * item.quantity}</p>
+                  <p>€{item.price} x {item.quantity} = €{item.price * item.quantity}</p>
                 </div>
 
                 <div className="cart-actions">
@@ -461,7 +527,7 @@ return (
               </div>
             ))}
 
-            <h3 className="total">Total: ${total}</h3>
+            <h3 className="total">Total: €{total}</h3>
           </div>
         )}
 
@@ -552,13 +618,13 @@ return (
             <h3>Order Details</h3>
             {cart.map((item) => (
               <p key={item.id}>
-                {item.name} — {item.quantity} {item.unit}(s) — ${item.price * item.quantity}
+                {item.name} — {item.quantity} {item.unit}(s) — €{item.price * item.quantity}
               </p>
             ))}
 
-            <h2>Subtotal: ${total}</h2>
-            <h2>Delivery Fee: ${deliveryFee}</h2>
-            <h1>🇨🇭 Final Total: ${total + deliveryFee}</h1>
+            <h2>Subtotal: €{total}</h2>
+            <h2>Delivery Fee: €{deliveryFee}</h2>
+            <h1>🇨🇭 Final Total: €{total + deliveryFee}</h1>
             <p className="thank-you">Thank you for ordering from Swiss Dairy Farm.</p>
           </div>
         </section>
@@ -598,7 +664,7 @@ return (
 
             <div className="order-stats">
               <span>Total Orders: {totalFilteredOrders}</span>
-              <span>Total Money: ${totalFilteredMoney}</span>
+              <span>Total Money: €{totalFilteredMoney}</span>
             </div>
           </div>
 
@@ -618,7 +684,7 @@ return (
               <p><strong>Phone:</strong> {order.phone}</p>
               <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
               <p><strong>Status:</strong> {keptOrderIds.includes(order.id) ? "Order kept" : order.status}</p>
-              <p><strong>Total:</strong> ${order.total}</p>
+              <p><strong>Total:</strong> €{order.total}</p>
 
               <h3>Items</h3>
               {order.items.map((item) => (

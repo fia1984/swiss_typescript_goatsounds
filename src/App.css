@@ -2105,3 +2105,113 @@ textarea:focus {
   font-weight: 700;
   color: #0f5d2c;
 }
+
+
+/* Cancel popup and order status improvements only */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 35, 25, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 999;
+}
+
+.cancel-popup {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(41, 96, 53, 0.14);
+}
+
+.cancel-popup h2 {
+  margin: 0 0 10px;
+  color: #1f4f2b;
+  font-size: 26px;
+}
+
+.cancel-popup p {
+  margin: 0 0 24px;
+  color: #52615a;
+  line-height: 1.5;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.popup-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  min-width: 160px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.popup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+}
+
+.cancel-confirm-btn {
+  background: #d94444;
+  color: white;
+}
+
+.keep-order-btn {
+  background: #dff5df;
+  color: #1f6b2b;
+  border: 1px solid #9fd89f;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-left: 6px;
+}
+
+.status-kept {
+  background: #e4f8e7;
+  color: #1f7a34;
+  border: 1px solid #9bddaa;
+}
+
+.status-canceled {
+  background: #fde4e4;
+  color: #b42323;
+  border: 1px solid #f2aaaa;
+}
+
+.status-delivered {
+  background: #e2f2ff;
+  color: #1769aa;
+  border: 1px solid #9cccf2;
+}
+
+@media (max-width: 520px) {
+  .cancel-popup {
+    padding: 24px 18px;
+  }
+
+  .popup-buttons {
+    flex-direction: column;
+  }
+
+  .popup-btn {
+    width: 100%;
+  }
+}
