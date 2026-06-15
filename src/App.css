@@ -2069,3 +2069,39 @@ textarea:focus {
   margin: 12px auto;
   max-width: 700px;
 }
+
+
+.order-filter-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 18px auto;
+  padding: 14px;
+  max-width: 760px;
+  background: #f4fff7;
+  border: 1px solid #cfe8d6;
+  border-radius: 14px;
+}
+
+.order-filter-panel label {
+  font-weight: 700;
+  color: #0f5d2c;
+}
+
+.order-filter-panel select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #b9d8c2;
+  font-weight: 700;
+  color: #0f5d2c;
+}
+
+.order-stats {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-weight: 700;
+  color: #0f5d2c;
+}

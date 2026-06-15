@@ -126,6 +126,19 @@ function App() {
 
 const cart = useAppSelector((state) => state.cart.items);
   const { orders, loading, error } = useAppSelector((state) => state.orders);
+  const [orderFilter, setOrderFilter] = useState("all");
+
+  const filteredOrders =
+    orderFilter === "all"
+      ? orders
+      : orders.filter((order) => order.status === orderFilter);
+
+  const totalFilteredOrders = filteredOrders.length;
+
+  const totalFilteredMoney = filteredOrders.reduce(
+    (sum, order) => sum + order.total,
+    0
+  );
   const deliveryFee = 5;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -568,16 +581,36 @@ return (
             </button>
           </div>
 
+          <div className="order-filter-panel">
+            <label htmlFor="orderFilter">Filter Orders:</label>
+
+            <select
+              id="orderFilter"
+              value={orderFilter}
+              onChange={(event) => setOrderFilter(event.target.value)}
+            >
+              <option value="all">All Orders</option>
+              <option value="pending">Pending</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="canceled">Canceled</option>
+            </select>
+
+            <div className="order-stats">
+              <span>Total Orders: {totalFilteredOrders}</span>
+              <span>Total Money: ${totalFilteredMoney}</span>
+            </div>
+          </div>
+
           {loading && <p className="order-message">Loading orders...</p>}
 
           {error && <p className="order-error">{error}</p>}
 
+          
 
-          {loading && <p className="order-message">Loading orders...</p>}
+          
 
-          {error && <p className="order-error">{error}</p>}
-
-          {orders.map((order) => (
+          {filteredOrders.map((order) => (
             <div className="invoice-card" key={order.id}>
               
               <p><strong>Order Number:</strong> {order.id}</p><h3>{order.customerName}</h3>
