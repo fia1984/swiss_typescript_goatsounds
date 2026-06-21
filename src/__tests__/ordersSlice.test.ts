@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import ordersReducer, {
   addOrder,
   cancelOrder,
@@ -7,7 +8,7 @@ import ordersReducer, {
 describe("ordersSlice unit tests", () => {
   test("adds a new order", () => {
     const order = {
-      id: 1,
+      id: "1",
       orderNumber: "ORD-001",
       customerName: "Fia",
       phone: "1234567890",
@@ -15,7 +16,7 @@ describe("ordersSlice unit tests", () => {
       deliveryDate: "2026-06-20",
       items: [
         {
-          id: 1,
+          id: "1",
           name: "Fresh Swiss Milk",
           price: 6,
           unit: "liter",
@@ -24,6 +25,7 @@ describe("ordersSlice unit tests", () => {
       ],
       total: 12,
       status: "pending",
+      createdAt: "2026-06-20",
     };
 
     const state = ordersReducer(undefined, addOrder(order));
@@ -37,7 +39,7 @@ describe("ordersSlice unit tests", () => {
     const startState = {
       orders: [
         {
-          id: 1,
+          id: "1",
           orderNumber: "ORD-001",
           customerName: "Fia",
           phone: "1234567890",
@@ -46,13 +48,14 @@ describe("ordersSlice unit tests", () => {
           items: [],
           total: 12,
           status: "pending",
+      createdAt: "2026-06-20",
         },
       ],
       loading: false,
       error: null,
     };
 
-    const state = ordersReducer(startState, cancelOrder(1));
+    const state = ordersReducer(startState, cancelOrder("1"));
 
     expect(state.orders[0].status).toBe("canceled");
   });
@@ -61,7 +64,7 @@ describe("ordersSlice unit tests", () => {
     const startState = {
       orders: [
         {
-          id: 1,
+          id: "1",
           orderNumber: "ORD-001",
           customerName: "Fia",
           phone: "1234567890",
@@ -70,6 +73,7 @@ describe("ordersSlice unit tests", () => {
           items: [],
           total: 12,
           status: "pending",
+      createdAt: "2026-06-20",
         },
       ],
       loading: false,
@@ -78,7 +82,7 @@ describe("ordersSlice unit tests", () => {
 
     const state = ordersReducer(
       startState,
-      updateOrderStatus({ id: 1, status: "order kept" })
+      updateOrderStatus({ id: "1", status: "order kept" })
     );
 
     expect(state.orders[0].status).toBe("order kept");
@@ -89,7 +93,7 @@ describe("ordersSlice unit tests", () => {
     const startState = {
       orders: [
         {
-          id: 1,
+          id: "1",
           orderNumber: "ORD-001",
           customerName: "Fia",
           phone: "1234567890",
@@ -98,6 +102,7 @@ describe("ordersSlice unit tests", () => {
           items: [],
           total: 12,
           status: "pending",
+      createdAt: "2026-06-20",
         },
       ],
       loading: false,
@@ -106,7 +111,7 @@ describe("ordersSlice unit tests", () => {
 
     const state = ordersReducer(
       startState,
-      updateOrderStatus({ id: 1, status: "delivered" })
+      updateOrderStatus({ id: "1", status: "delivered" })
     );
 
     expect(state.orders[0].status).toBe("delivered");
