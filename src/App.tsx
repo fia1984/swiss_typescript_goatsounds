@@ -419,7 +419,18 @@ return (
               <button
                 type="button"
                 className="popup-btn keep-order-btn"
-                onClick={keepOrder}
+                onClick={() => {
+                  const latestOrder = orders[0];
+
+                  if (latestOrder) {
+                    dispatch(
+                      updateOrderStatus({
+                        id: latestOrder.id,
+                        status: "order kept" as any,
+                      })
+                    );
+                  }
+                }}
               >
                 No, Keep Order
               </button>
